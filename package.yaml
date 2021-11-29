@@ -35,7 +35,12 @@ executables:
     - -with-rtsopts=-N
     dependencies:
     - AdventOfCode2021
-
+  aoc-prebuild:
+    main:                Main.hs
+    source-dirs:         prebuild
+    dependencies:
+    - AdventOfCode2021
+    - directory >= 1.3.6.0
 tests:
   AdventOfCode2021-test:
     main:                Spec.hs

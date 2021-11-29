@@ -25,6 +25,7 @@ source-repository head
 
 library
   exposed-modules:
+      Day01.Part1
       Helpers.Input
       Lib
   other-modules:
@@ -45,6 +46,18 @@ executable AdventOfCode2021-exe
   build-depends:
       AdventOfCode2021
     , base >=4.7 && <5
+  default-language: Haskell2010
+
+executable aoc-prebuild
+  main-is: Main.hs
+  other-modules:
+      Paths_AdventOfCode2021
+  hs-source-dirs:
+      prebuild
+  build-depends:
+      AdventOfCode2021
+    , base >=4.7 && <5
+    , directory >=1.3.6.0
   default-language: Haskell2010
 
 test-suite AdventOfCode2021-test

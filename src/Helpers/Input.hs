@@ -1,4 +1,4 @@
-module Helpers.Input (split, readInteger) where
+module Helpers.Input (split, readInteger, maybeIO) where
 
 
 split :: Char -> String -> [String]
@@ -11,3 +11,7 @@ split c [] = []
 
 readInteger :: String -> Integer
 readInteger = read
+
+maybeIO :: Maybe a -> IO a
+maybeIO (Just x) = return x 
+maybeIO Nothing = fail "No value"
