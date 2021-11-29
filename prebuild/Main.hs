@@ -6,8 +6,8 @@ import Debug.Trace
 isDay ('D':'a':'y':number) = [number]
 isDay _ = []
 
-getPart :: [Char] -> [Char] -> [[Char]]
-getPart day ('P':'a':'r':'t':number) = ["Day" ++ day ++ ".Part" ++ number]
+getPart :: [Char] -> [Char] -> [(String, String, [Char])]
+getPart day ('P':'a':'r':'t':number) = [(day, number, "Day" ++ day ++ ".Part" ++ number)]
 getPart _ _ = []
 
 removeExt file =
@@ -19,8 +19,11 @@ removeExt file =
 
 findDays :: IO [[Char]]
 findDays = concatMap isDay <$> listDirectory "src/"
-findParts :: [Char] -> IO [[Char]]
+findParts :: [Char] -> IO [(String, String, [Char])]
 findParts day = concatMap (getPart day . removeExt) <$> listDirectory ("src/Day" ++ day)
+
+buildImport day = "import Day" ++ day
+buildSolve (day, part, mod) = "solve " ++ "\"" ++ day ++ "\" " ++ "\"" ++ part ++ "\" = " ++ mod ++ ".solve"
 
 main = do
   contents <- lines <$> readFile "app/Main.hs"
@@ -28,4 +31,6 @@ main = do
   end <- maybeIO $ elemIndex "-- AUTOGEN-END" contents
   days <- findDays
   parts <- concat <$> mapM findParts days
-  putStrLn $ intercalate "\n" (take (start + 1) contents ++ parts ++ drop end contents)
+  let imports = map buildImport days
+  let solves = map buildSolve parts
+  putStrLn $ intercalate "\n" (take (start + 1) contents ++ imports ++ solves ++ drop end contents)
