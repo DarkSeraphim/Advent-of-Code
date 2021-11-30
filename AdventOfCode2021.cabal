@@ -26,6 +26,7 @@ source-repository head
 library
   exposed-modules:
       Day01.Part1
+      Day17.Part1
       Helpers.Input
       Lib
   other-modules:
