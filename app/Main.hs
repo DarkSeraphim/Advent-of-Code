@@ -8,8 +8,10 @@ import System.Environment (getArgs)
 -- way to generate imports?
 -- AUTOGEN-START
 import Day17.Part1
+import Day17.Part2
 import Day01.Part1
 solveDay "17" "1" = Day17.Part1.solve
+solveDay "17" "2" = Day17.Part2.solve
 solveDay "1" "1" = Day01.Part1.solve
 -- AUTOGEN-END
 

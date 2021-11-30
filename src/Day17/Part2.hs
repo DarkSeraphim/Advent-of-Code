@@ -1,4 +1,4 @@
-module Day17.Part1 (solve) where
+module Day17.Part2 (solve) where
   import Data.List (intercalate)
   import Data.Set (fromList, size, Set, delete, member, toList)
   import Text.Printf (printf)
@@ -6,7 +6,7 @@ module Day17.Part1 (solve) where
   import Debug.Trace (trace)
 
   pack :: (Int, (Int, Char)) -> [[Int]]
-  pack (row, (column, '#')) = [[row, column, 0]]
+  pack (row, (column, '#')) = [[row, column, 0, 0]]
   pack (row, (column, _)) = []
 
   parseList :: (Int, String) -> [[Int]]
