@@ -1,11 +1,11 @@
-module Day01.Part1 (solve) where
+module Day01.Part2 (solve) where
   import Text.ParserCombinators.Parsec.Char
   import Text.ParserCombinators.Parsec
   import Helpers.Input (orFail)
   import Text.Printf (printf)
 
   import Debug.Trace (trace)
-  import Data.Set (Set, empty, insert, member)
+  import Data.Set (Set, empty, insert, member, singleton)
   
   movements :: GenParser Char st [(Char, Int)]
   movements = sepBy movement (string ", ")
@@ -27,15 +27,22 @@ module Day01.Part1 (solve) where
   rot' (-1, 0) 'L' = (0, -1)
   rot' _ _ = (0, 0)
 
-  walk :: ((Int, Int), (Int, Int)) -> [(Char, Int)] -> (Int, Int)
-  walk (dir, pos) [] = pos
-  walk (dir, (x, y)) ((rot, mag):xs) = walk  ((dx, dy), (x', y')) xs
-    where (dx, dy) = rot' dir rot 
-          x' = x + dx * mag
-          y' = y + dy * mag
+  walk' :: Set (Int, Int) -> [(Char, Int)] -> (Int, Int) -> (Int, Int) -> Int -> (Int, Int) 
+  walk' hist xs pos dir 0 = walk hist (dir, pos) xs
+  walk' hist xs (x, y) (dx, dy) n
+    | member (x', y') hist = (x', y')
+    | otherwise = walk' (insert (x', y') hist) xs (x', y') (dx, dy) (n - 1)
+    where x' = x + dx
+          y' = y + dy
+
+  walk :: Set (Int, Int) -> ((Int, Int), (Int, Int)) -> [(Char, Int)] -> (Int, Int)
+  walk hist (dir, pos) [] = pos
+  walk hist (dir, (x, y)) ((rot, mag):xs) = walk' hist xs (x, y) dd mag
+    where dd = rot' dir rot 
 
   solve = do
     contents <- getLine
     moves <- orFail $ parse movements "whoops" contents
-    let (x, y) = walk ((0, 1), (0, 0)) moves
+    let hist = singleton (0, 0)
+    let (x, y) = walk hist ((0, 1), (0, 0)) moves
     printf "You moved %d steps" (abs x + abs y)

@@ -1,4 +1,4 @@
-module Helpers.Input (split, readInteger, maybeIO) where
+module Helpers.Input (split, readInteger, maybeIO, orFail) where
 
 
 split :: Char -> String -> [String]
@@ -15,3 +15,7 @@ readInteger = read
 maybeIO :: Maybe a -> IO a
 maybeIO (Just x) = return x 
 maybeIO Nothing = fail "No value"
+
+orFail :: (Show a) => Either a b -> IO b
+orFail (Left s) = fail (show s)
+orFail (Right b) = return b
