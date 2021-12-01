@@ -27,8 +27,6 @@ library
   exposed-modules:
       Day01.Part1
       Day01.Part2
-      Day17.Part1
-      Day17.Part2
       Helpers.Input
       Lib
   other-modules:
