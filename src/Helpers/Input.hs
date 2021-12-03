@@ -1,6 +1,4 @@
-module Helpers.Input (split, readInteger, maybeIO, orFail) where
-
-
+module Helpers.Input (split, readInt, maybeIO, orFail) where
 split :: Char -> String -> [String]
 split c (x:xs)
     | x == c = [] : split c xs
@@ -9,11 +7,11 @@ split c (x:xs)
         where result = split c xs
 split c [] = []
 
-readInteger :: String -> Integer
-readInteger = read
+readInt :: String -> Int
+readInt = read
 
 maybeIO :: Maybe a -> IO a
-maybeIO (Just x) = return x 
+maybeIO (Just x) = return x
 maybeIO Nothing = fail "No value"
 
 orFail :: (Show a) => Either a b -> IO b
