@@ -1,5 +1,5 @@
 import Data.List (elemIndex, intercalate)
-import Helpers.Input (maybeIO, readInteger)
+import Helpers.Input (maybeIO, readInt)
 import System.Directory (listDirectory)
 import Debug.Trace
 import System.IO (openFile, IOMode (ReadWriteMode), hGetContents, hPutStr, hClose)
@@ -27,7 +27,7 @@ findParts day = concatMap (getPart day . removeExt) <$> listDirectory ("src/Day"
 buildImport mod = "import " ++ mod
 buildSolve :: (String, String, String) -> String
 buildSolve (day, part, mod) = printf "solveDay \"%s\" \"%s\" = %s.solve" d part mod
-  where d = show (readInteger day)
+  where d = show (readInt day)
 
 getMod (_, _, mod) = mod
 
