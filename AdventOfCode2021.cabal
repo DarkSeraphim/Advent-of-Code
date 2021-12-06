@@ -35,7 +35,10 @@ library
       Day04.Part2
       Day05.Part1
       Day05.Part2
+      Day06.Part1
+      Day06.Part2
       Helpers.Input
+      Helpers.Parsec
       Lib
   other-modules:
       Paths_AdventOfCode2021
