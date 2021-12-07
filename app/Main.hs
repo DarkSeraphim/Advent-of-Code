@@ -9,6 +9,8 @@ import System.Environment (getArgs)
 -- AUTOGEN-START
 import Day02.Part1
 import Day02.Part2
+import Day07.Part1
+import Day07.Part2
 import Day03.Part1
 import Day03.Part2
 import Day05.Part1
@@ -21,6 +23,8 @@ import Day04.Part1
 import Day04.Part2
 solveDay "2" "1" = Day02.Part1.solve
 solveDay "2" "2" = Day02.Part2.solve
+solveDay "7" "1" = Day07.Part1.solve
+solveDay "7" "2" = Day07.Part2.solve
 solveDay "3" "1" = Day03.Part1.solve
 solveDay "3" "2" = Day03.Part2.solve
 solveDay "5" "1" = Day05.Part1.solve
