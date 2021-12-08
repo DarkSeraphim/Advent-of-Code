@@ -40,6 +40,7 @@ library
       Day07.Part1
       Day07.Part2
       Day08.Part1
+      Day08.Part2
       Helpers.Input
       Helpers.Parsec
       Lib
