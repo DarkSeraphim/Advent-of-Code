@@ -9,6 +9,8 @@ module Day08.Part2 (solve) where
     import Data.Set (Set, fromList, intersection)
     import Data.Char (chr, ord)
     import Data.List (find)
+    import Data.Foldable (foldlM)
+    import Control.Monad (filterM)
 
     data Line = Line { signal :: [String], output :: [String]}
     type SignalDict = Map (Set Char) Char
@@ -28,62 +30,60 @@ module Day08.Part2 (solve) where
     display :: GenParser Char st String
     display = some $ oneOf "abcdefg"
 
-    findDigit'' :: (Set Char -> Bool) -> [String] -> Set Char
-    findDigit'' f lines = case display of
-       Just res -> res
-       Nothing -> error "No match found"
-      where display = find f (map fromList lines)
+    findDigit'' :: (Set Char -> IO Bool) -> [String] -> IO (Set Char)
+    findDigit'' f lines = head <$> filterM f (map fromList lines)
 
-    findByValue' :: Char -> [(Set Char, Char)] -> Maybe (Set Char)
-    findByValue' _ [] = Nothing
+    findByValue' :: Char -> [(Set Char, Char)] -> IO (Set Char)
+    findByValue' c1 [] = fail (printf "Number %s not yet known" (show c1))
     findByValue' c1 ((cs, c2):rest)
-      | c1 == c2 = Just cs
+      | c1 == c2 = return cs
       | otherwise = findByValue' c1 rest
 
-    findByValue :: Char -> SignalDict -> Maybe (Set Char)
+    findByValue :: Char -> SignalDict -> IO (Set Char)
     findByValue c d = findByValue' c (toList d)
 
-    overlap :: Set Char -> SignalDict -> Char -> Int
-    overlap incoming dict possible = case res of
-        Just known -> length $ intersection known incoming
-        Nothing -> 0
-      where res = findByValue possible dict
+    overlap :: Set Char -> SignalDict -> Char -> IO Int
+    overlap incoming dict possible = do
+        known <- findByValue possible dict
+        return $ length $ intersection known incoming
 
-    findDigit :: [String] -> SignalDict -> Char -> Set Char
-    findDigit signal dict '1' = findDigit'' (\s -> length s == 2) signal
-    findDigit signal dict '2' = findDigit'' (\s -> length s == 5 && overlap s dict '4' == 2) signal
-    findDigit signal dict '3' = findDigit'' (\s -> length s == 5 && overlap s dict '7' == 3 && overlap s dict '1' == 2) signal
-    findDigit signal dict '4' = findDigit'' (\s -> length s == 4) signal
-    findDigit signal dict '5' = findDigit'' (\s -> length s == 5 && overlap s dict '4' == 3 && overlap s dict '7' == 2) signal
-    findDigit signal dict '6' = findDigit'' (\s -> length s == 6 && overlap s dict '7' == 2 && overlap s dict '1' == 1) signal
-    findDigit signal dict '7' = findDigit'' (\s -> length s == 3) signal
-    findDigit signal dict '8' = findDigit'' (\s -> length s == 7) signal
-    findDigit signal dict '9' = findDigit'' (\s -> length s == 6 && overlap s dict '3' == 5) signal
-    findDigit signal dict '0' = findDigit'' (\s -> length s == 6 && overlap s dict '3' == 4 && overlap s dict '1' == 2) signal
-    findDigit signal _ char = error (printf "Didn't find signal '%s' for char '%s'" (show signal) (show char))
+    findDigit :: [String] -> SignalDict -> Char -> IO (Set Char)
+    findDigit signal dict '1' = findDigit'' (\s -> return $ length s == 2) signal
+    findDigit signal dict '2' = findDigit'' (\s -> (length s == 5 &&) . (==2) <$> overlap s dict '4') signal
+    findDigit signal dict '3' = findDigit'' (\s -> (length s == 5 &&) <$> liftA2 (&&) ((==3) <$> overlap s dict '7') ((==2) <$> overlap s dict '1')) signal
+    findDigit signal dict '4' = findDigit'' (\s -> return $ length s == 4) signal
+    findDigit signal dict '5' = findDigit'' (\s -> (length s == 5 &&) <$> liftA2 (&&) ((==3) <$> overlap s dict '4') ((==2) <$> overlap s dict '7')) signal
+    findDigit signal dict '6' = findDigit'' (\s -> (length s == 6 &&) <$> liftA2 (&&) ((==2) <$> overlap s dict '7') ((==1) <$> overlap s dict '1')) signal
+    findDigit signal dict '7' = findDigit'' (\s -> return $ length s == 3) signal
+    findDigit signal dict '8' = findDigit'' (\s -> return $ length s == 7) signal
+    findDigit signal dict '9' = findDigit'' (\s -> (length s == 6 &&) . (==5) <$> overlap s dict '3') signal
+    findDigit signal dict '0' = findDigit'' (\s -> (length s == 6 &&) <$> liftA2 (&&) ((==4) <$> overlap s dict '3') ((==2) <$> overlap s dict '1')) signal
+    findDigit signal _ char = fail (printf "Didn't find signal '%s' for char '%s'" (show signal) (show char))
 
     order = "1478639025"
 
-    createDictionary' :: SignalDict -> [String] -> [Char] -> SignalDict
-    createDictionary' dict signal [] = dict
-    createDictionary' dict signal (display:rest) = createDictionary' (insert signals' display dict) signal rest
-        where signals = findDigit signal dict display
-              signals' = trace (printf "Display: %s, Signals: %s" (show display) (show signals)) signals
+    createDictionary' :: SignalDict -> [String] -> [Char] -> IO SignalDict
+    createDictionary' dict signal [] = return dict
+    createDictionary' dict signal (display:rest) = do
+        signals <- findDigit signal dict display
+        createDictionary' (insert signals display dict) signal rest
 
-    createDictionary :: Line -> SignalDict
+    createDictionary :: Line -> IO SignalDict
     createDictionary line = createDictionary' empty (signal line) order
 
-    translateSignal :: SignalDict -> Set Char -> Char
+    translateSignal :: SignalDict -> Set Char -> IO Char
     translateSignal dict signal = case res of
-        Just c -> c
-        Nothing -> error "Failed to translate"
+        Just c -> return c
+        Nothing -> fail "Failed to translate"
       where res = Data.Map.lookup signal dict
 
-    decodeLine :: Line -> Int
-    decodeLine line = readInt displays
-        where dict = createDictionary line
-              displays = map (translateSignal dict . fromList) (output line)
+    decodeLine :: Line -> IO Int
+    decodeLine line = do
+        dict <- createDictionary line
+        displays <- mapM (translateSignal dict . fromList) (output line)
+        return $ readInt displays
 
     solve = do
         input <- (orFail . parse parseInput "Whoops") =<< getContents
-        printf "%d" $ sum (map decodeLine input)
+        answer <- sum <$> mapM decodeLine input
+        printf "%d" answer
