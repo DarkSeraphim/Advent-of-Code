@@ -1,6 +1,6 @@
-module Helpers.Parsec (number) where
-    import Text.ParserCombinators.Parsec (GenParser, option)
-    import Helpers.Input (readInt)
+module Helpers.Parsec (number, parseInput) where
+    import Text.ParserCombinators.Parsec (GenParser, option, parse)
+    import Helpers.Input (readInt, orFail)
     import Control.Applicative (some)
     import Text.ParserCombinators.Parsec.Char (digit, char)
 
@@ -13,3 +13,5 @@ module Helpers.Parsec (number) where
                     _ -> error "Wat."
         (mult *) . readInt <$> some digit
 
+    parseInput :: GenParser Char () a -> IO a
+    parseInput parseFunc = (orFail . parse parseFunc "Input") =<< getContents

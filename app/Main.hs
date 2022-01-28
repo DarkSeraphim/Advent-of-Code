@@ -17,6 +17,8 @@ import Day08.Part1
 import Day08.Part2
 import Day07.Part1
 import Day07.Part2
+import Day20.Part1
+import Day20.Part2
 import Day03.Part1
 import Day03.Part2
 import Day11.Part1
@@ -57,6 +59,8 @@ solveDay "8" "1" = Day08.Part1.solve
 solveDay "8" "2" = Day08.Part2.solve
 solveDay "7" "1" = Day07.Part1.solve
 solveDay "7" "2" = Day07.Part2.solve
+solveDay "20" "1" = Day20.Part1.solve
+solveDay "20" "2" = Day20.Part2.solve
 solveDay "3" "1" = Day03.Part1.solve
 solveDay "3" "2" = Day03.Part2.solve
 solveDay "11" "1" = Day11.Part1.solve
