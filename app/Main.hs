@@ -21,6 +21,7 @@ import Day22.Part1
 import Day22.Part2
 import Day07.Part1
 import Day07.Part2
+import Day24.Part1
 import Day20.Part1
 import Day20.Part2
 import Day03.Part1
@@ -69,6 +70,7 @@ solveDay "22" "1" = Day22.Part1.solve
 solveDay "22" "2" = Day22.Part2.solve
 solveDay "7" "1" = Day07.Part1.solve
 solveDay "7" "2" = Day07.Part2.solve
+solveDay "24" "1" = Day24.Part1.solve
 solveDay "20" "1" = Day20.Part1.solve
 solveDay "20" "2" = Day20.Part2.solve
 solveDay "3" "1" = Day03.Part1.solve

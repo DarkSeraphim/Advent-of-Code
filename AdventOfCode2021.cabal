@@ -73,6 +73,7 @@ library
       Day22.Part2
       Day23.Part1
       Day23.Part2
+      Day24.Part1
       Helpers.Input
       Helpers.Parsec
       Lib
