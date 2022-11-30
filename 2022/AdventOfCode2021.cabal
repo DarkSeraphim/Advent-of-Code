@@ -1,0 +1,158 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.34.4.
+--
+-- see: https://github.com/sol/hpack
+
+name:           AdventOfCode2021
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/githubuser/AdventOfCode2021#readme>
+homepage:       https://github.com/githubuser/AdventOfCode2021#readme
+bug-reports:    https://github.com/githubuser/AdventOfCode2021/issues
+author:         Author name here
+maintainer:     example@example.com
+copyright:      2021 Author name here
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    ChangeLog.md
+
+source-repository head
+  type: git
+  location: https://github.com/githubuser/AdventOfCode2021
+
+library
+  exposed-modules:
+      Day01.Part1
+      Day01.Part2
+      Day02.Part1
+      Day02.Part2
+      Day03.Part1
+      Day03.Part2
+      Day04.Part1
+      Day04.Part2
+      Day05.Part1
+      Day05.Part2
+      Day06.Part1
+      Day06.Part2
+      Day07.Part1
+      Day07.Part2
+      Day08.Part1
+      Day08.Part2
+      Day09.Part1
+      Day09.Part2
+      Day10.Part1
+      Day10.Part2
+      Day10.Part3
+      Day11.Part1
+      Day11.Part2
+      Day12.Part1
+      Day12.Part2
+      Day13.Part1
+      Day13.Part2
+      Day14.Part1
+      Day14.Part2
+      Day14.Part3
+      Day15.Part1
+      Day15.Part2
+      Day16.Part1
+      Day16.Part2
+      Day17.Part1
+      Day17.Part2
+      Day18.Part1
+      Day18.Part2
+      Day19.Part1
+      Day19.Part2
+      Day20.Part1
+      Day20.Part2
+      Day21.Part1
+      Day21.Part2
+      Day22.Part1
+      Day22.Part2
+      Day23.Part1
+      Day23.Part2
+      Day24.Part1
+      Helpers.Input
+      Helpers.Parsec
+      Lib
+  other-modules:
+      Paths_AdventOfCode2021
+  hs-source-dirs:
+      src
+  build-depends:
+      base >=4.7 && <5
+    , containers >=0.6.5.1
+    , deepseq >=1.4.4.0
+    , directory >=1.3.6.0
+    , filepath >=1.4.2.1
+    , parsec >=3.1.14.0
+    , pretty >=1.1.3.6
+    , process >=1.6.13.2
+    , text >=1.2.4.1
+    , time >=1.9.3
+  default-language: Haskell2010
+
+executable AdventOfCode2021-exe
+  main-is: Main.hs
+  other-modules:
+      Paths_AdventOfCode2021
+  hs-source-dirs:
+      app
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      AdventOfCode2021
+    , base >=4.7 && <5
+    , containers >=0.6.5.1
+    , deepseq >=1.4.4.0
+    , directory >=1.3.6.0
+    , filepath >=1.4.2.1
+    , parsec >=3.1.14.0
+    , pretty >=1.1.3.6
+    , process >=1.6.13.2
+    , text >=1.2.4.1
+    , time >=1.9.3
+  default-language: Haskell2010
+
+executable aoc-prebuild
+  main-is: Main.hs
+  other-modules:
+      Paths_AdventOfCode2021
+  hs-source-dirs:
+      prebuild
+  build-depends:
+      AdventOfCode2021
+    , base >=4.7 && <5
+    , containers >=0.6.5.1
+    , deepseq >=1.4.4.0
+    , directory >=1.3.6.0
+    , filepath >=1.4.2.1
+    , parsec >=3.1.14.0
+    , pretty >=1.1.3.6
+    , process >=1.6.13.2
+    , text >=1.2.4.1
+    , time >=1.9.3
+  default-language: Haskell2010
+
+test-suite AdventOfCode2021-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_AdventOfCode2021
+  hs-source-dirs:
+      test
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      AdventOfCode2021
+    , base >=4.7 && <5
+    , containers >=0.6.5.1
+    , deepseq >=1.4.4.0
+    , directory >=1.3.6.0
+    , filepath >=1.4.2.1
+    , parsec >=3.1.14.0
+    , pretty >=1.1.3.6
+    , process >=1.6.13.2
+    , text >=1.2.4.1
+    , time >=1.9.3
+  default-language: Haskell2010

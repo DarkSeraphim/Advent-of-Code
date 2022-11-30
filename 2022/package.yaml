@@ -1,0 +1,62 @@
+name:                AdventOfCode2021
+version:             0.1.0.0
+github:              "githubuser/AdventOfCode2021"
+license:             BSD3
+author:              "Author name here"
+maintainer:          "example@example.com"
+copyright:           "2021 Author name here"
+
+extra-source-files:
+- README.md
+- ChangeLog.md
+
+# Metadata used when publishing your package
+# synopsis:            Short description of your package
+# category:            Web
+
+# To avoid duplicated efforts in documentation and dealing with the
+# complications of embedding Haddock markup inside cabal files, it is
+# common to point users to the README.md file.
+description:         Please see the README on GitHub at <https://github.com/githubuser/AdventOfCode2021#readme>
+
+dependencies:
+- base >= 4.7 && < 5
+- deepseq >= 1.4.4.0
+- containers >= 0.6.5.1
+- text >= 1.2.4.1
+- time >= 1.9.3
+- process >= 1.6.13.2
+- directory >= 1.3.6.0
+- filepath >= 1.4.2.1
+- parsec >= 3.1.14.0
+- pretty >= 1.1.3.6
+
+library:
+  source-dirs: src
+
+executables:
+  AdventOfCode2021-exe:
+    main:                Main.hs
+    source-dirs:         app
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - AdventOfCode2021
+  aoc-prebuild:
+    main:                Main.hs
+    source-dirs:         prebuild
+    dependencies:
+    - AdventOfCode2021
+    - directory >= 1.3.6.0
+tests:
+  AdventOfCode2021-test:
+    main:                Spec.hs
+    source-dirs:         test
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - AdventOfCode2021
