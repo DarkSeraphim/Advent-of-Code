@@ -1,6 +1,6 @@
-name:                AdventOfCode2021
+name:                AdventOfCode2022
 version:             0.1.0.0
-github:              "githubuser/AdventOfCode2021"
+github:              "githubuser/AdventOfCode"
 license:             BSD3
 author:              "Author name here"
 maintainer:          "example@example.com"
@@ -35,7 +35,7 @@ library:
   source-dirs: src
 
 executables:
-  AdventOfCode2021-exe:
+  AdventOfCode2022-exe:
     main:                Main.hs
     source-dirs:         app
     ghc-options:
@@ -43,15 +43,15 @@ executables:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - AdventOfCode2021
+    - AdventOfCode2022
   aoc-prebuild:
     main:                Main.hs
     source-dirs:         prebuild
     dependencies:
-    - AdventOfCode2021
+    - AdventOfCode2022
     - directory >= 1.3.6.0
 tests:
-  AdventOfCode2021-test:
+  AdventOfCode2022-test:
     main:                Spec.hs
     source-dirs:         test
     ghc-options:
@@ -59,4 +59,4 @@ tests:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - AdventOfCode2021
+    - AdventOfCode2022
