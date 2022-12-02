@@ -1,7 +1,9 @@
 YEAR=${YEAR:-$(cat .year)}
 
 if [ -f "$YEAR/prepare.sh" ]; then
-  "$YEAR/prepare.sh" $1
+  cd "$YEAR"
+  ./prepare.sh $1
+  cd ..
 fi
 
 file="$YEAR/inputs/$(printf "%02d" $1).txt"
