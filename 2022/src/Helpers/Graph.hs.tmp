@@ -1,0 +1,12 @@
+module Helpers.Graph (dijkstra) where
+import Data.Map (Map)
+dijkstra :: Map (a, a) Int -> Map a [a] -> a -> [a]
+dijkstra weights edges start = []
+
+dijkstra' :: ((a, a) -> Int) -> Map a [a] -> a -> [a]
+dijkstra' wfunc edges start = []
+
+dijkstra'' ((a, a) -> Int) -> Map a [a] -> a -> Map a Int
+
+bfs :: Map a [a] -> a -> [a]
+bfs = dijkstra' (const 1)

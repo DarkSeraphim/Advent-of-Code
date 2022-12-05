@@ -11,14 +11,22 @@ import Day02.Part1
 import Day02.Part2
 import Day03.Part1
 import Day03.Part2
+import Day05.Part1
+import Day05.Part2
 import Day01.Part1
 import Day01.Part2
+import Day04.Part1
+import Day04.Part2
 solveDay "2" "1" = Day02.Part1.solve
 solveDay "2" "2" = Day02.Part2.solve
 solveDay "3" "1" = Day03.Part1.solve
 solveDay "3" "2" = Day03.Part2.solve
+solveDay "5" "1" = Day05.Part1.solve
+solveDay "5" "2" = Day05.Part2.solve
 solveDay "1" "1" = Day01.Part1.solve
 solveDay "1" "2" = Day01.Part2.solve
+solveDay "4" "1" = Day04.Part1.solve
+solveDay "4" "2" = Day04.Part2.solve
 -- AUTOGEN-END
 
 -- solve :: String -> String -> IO ()
