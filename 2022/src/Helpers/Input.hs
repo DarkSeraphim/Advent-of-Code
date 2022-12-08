@@ -1,4 +1,4 @@
-module Helpers.Input (split, readInt, maybeIO, orFail) where
+module Helpers.Input (split, readIntChar, readInt, maybeIO, orFail) where
 
 
 split :: Char -> String -> [String]
@@ -8,6 +8,9 @@ split c (x:xs)
     | otherwise = (x : head result) : tail result
         where result = split c xs
 split c [] = []
+
+readIntChar :: Char -> Int
+readIntChar c = readInt [c]
 
 readInt :: String -> Int
 readInt i = read i :: Int
