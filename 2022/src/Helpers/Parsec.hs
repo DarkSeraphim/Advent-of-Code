@@ -1,4 +1,4 @@
-module Helpers.Parsec (number, parseInput, Parser, endBy1', sepBy1') where
+module Helpers.Parsec (number, numberInteger, parseInput, Parser, endBy1', sepBy1') where
     import Text.ParserCombinators.Parsec (GenParser, option, parse, (<|>), try)
     import Helpers.Input (readInt, orFail)
     import Control.Applicative (some)
@@ -9,13 +9,19 @@ module Helpers.Parsec (number, parseInput, Parser, endBy1', sepBy1') where
     type Parser a = GenParser Char () a
 
     number :: Parser Int
-    number = do
+    number = number' readInt
+
+    number' :: Num a => (String -> a) -> Parser a
+    number' parser = do
         sign <- option '+' $ char '-'
         let mult = case sign of
                     '+' -> 1
                     '-' -> -1
                     _ -> error "Wat."
-        (mult *) . readInt <$> some digit
+        (mult *) . parser <$> some digit
+
+    numberInteger :: Parser Integer
+    numberInteger = number' read 
 
     endBy1' :: Show a => Parser a -> Parser sep -> Parser [a]
     endBy1' a sep = do
