@@ -45,8 +45,10 @@ library
       Day09.Part2
       Day10.Part1
       Day10.Part2
+      Helpers.Graph
       Helpers.Input
       Helpers.List
+      Helpers.Output
       Helpers.Parsec
       Lib
   other-modules:
