@@ -1,4 +1,4 @@
-module Lib (Point, newPoint) where
+module Lib (Point, newPoint, x, y) where
 
 data Point = Point {x :: Int, y :: Int} deriving (Show, Eq, Ord)
 
