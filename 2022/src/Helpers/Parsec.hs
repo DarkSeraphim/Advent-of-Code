@@ -31,11 +31,12 @@ module Helpers.Parsec (number, numberInteger, parseInput, Parser, endBy1', sepBy
             Nothing -> return []
 
     sepBy1' :: Parser a -> Parser sep -> Parser [a]
-    sepBy1' a sep = do
-        v <- tryMaybe a
-        case v of
-            Just v' -> (v' :) <$> (sep *> sepBy1' a sep)
-            Nothing -> return []
+    sepBy1' a sep = (:) <$> a <*> f
+        where f = do
+                    v <- tryMaybe sep
+                    case v of
+                        Just _ -> sepBy1' a sep
+                        Nothing -> return []
 
     tryMaybe :: Parser a -> Parser (Maybe a)
     tryMaybe a = try (Just <$> a) <|> return Nothing
