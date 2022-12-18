@@ -1,4 +1,4 @@
-module Helpers.Graph (bfs, dijkstraPath, dijkstraPaths, dijkstra, dijkstra', PathResult (dist, parent)) where
+module Helpers.Graph (bfs, bfsPath, dijkstraPath, dijkstraPaths, dijkstra, dijkstra', PathResult (dist, parent)) where
 import Data.Map (Map, empty, findWithDefault, (!))
 import Data.Set (Set, findMin, union, deleteFindMin, fromList, notMember, member, singleton)
 import qualified Data.Set as S
@@ -39,5 +39,10 @@ dijkstra'' wfunc edges visited queue
         newEdges = filter (`notMember` visited') (findWithDefault [] cur edges)
         queue'' = queue' `union` fromList (map (\v -> (w + wfunc (cur, v), v, cur)) newEdges)
 
-bfs :: Ord a => Show a => Map a [a] -> a -> a -> Maybe [a]
-bfs edges start end = rebuildPath end $ dijkstra' (const 1) edges start
+bfs :: Ord a => Show a => Map a [a] -> a -> Map a (PathResult a)
+bfs = dijkstra' (const 1)
+
+bfsPath :: Ord a => Show a => Map a [a] -> a -> a -> Maybe [a]
+bfsPath edges start end = rebuildPath end res
+  where res = bfs edges start
+
