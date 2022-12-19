@@ -1,7 +1,7 @@
 {-# LANGUAGE TupleSections #-}
 module Day12.Part2 (solve) where
 import Text.Printf (printf)
-import Lib (Point (x), newPoint, y)
+import Lib (Point, newPoint, x, y)
 import Data.Char (ord)
 import Data.Map (Map, (!), fromList, keys, empty, insertWith, toList, mapKeys)
 import qualified Data.Map as M

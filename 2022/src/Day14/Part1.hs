@@ -1,7 +1,7 @@
 {-# LANGUAGE TupleSections #-}
 module Day14.Part1 (solve) where
 import Text.Printf (printf)
-import Lib (Point (x, y), newPoint)
+import Lib (Point, newPoint, x, y)
 import Helpers.Parsec (Parser, number, parseInput)
 import Text.Parsec (char, sepBy1, string, endOfLine, endBy1)
 import Data.Map (fromList, member, keys, findWithDefault, Map, notMember, insert)
