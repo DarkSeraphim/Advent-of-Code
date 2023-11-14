@@ -1,7 +1,7 @@
 {-# LANGUAGE TupleSections #-}
 module Day14.Part1 (solve) where
 import Text.Printf (printf)
-import Lib (Point, newPoint, x, y)
+import Lib (Point, newPoint, getY, getX)
 import Helpers.Parsec (Parser, number, parseInput)
 import Text.Parsec (char, sepBy1, string, endOfLine, endBy1)
 import Data.Map (fromList, member, keys, findWithDefault, Map, notMember, insert)
@@ -29,7 +29,7 @@ right = newPoint 1 1
 
 simulateSand :: Point -> Map Point a -> Int -> Maybe Point
 simulateSand start grid lowest
-  | y start > lowest = Nothing
+  | getY start > lowest = Nothing
   | down' `notMember` grid = simulateSand down' grid lowest
   | left' `notMember` grid = simulateSand left' grid lowest
   | right' `notMember` grid = simulateSand right' grid lowest
@@ -51,10 +51,10 @@ solve = do
   let points = fromList $ map (,'#') $ concatMap (\lines' -> concat $ zipWith (curry getLines) lines' (tail lines')) lines
   let start = newPoint 500 0
 
-  let minX = minimum $ map x $ keys points
-  let maxX = maximum $ map x $ keys points
+  let minX = minimum $ map getX $ keys points
+  let maxX = maximum $ map getX $ keys points
   let minY = 0 --minimum $ map y $ keys points
-  let maxY = maximum $ map y $ keys points
+  let maxY = maximum $ map getY $ keys points
 
   let c = map (\y -> map (\x -> findWithDefault '.' (newPoint x y) points) [minX..maxX]) [minY..maxY]
 

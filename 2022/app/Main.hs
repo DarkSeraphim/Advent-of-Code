@@ -11,10 +11,22 @@ import Day13.Part1
 import Day13.Part2
 import Day02.Part1
 import Day02.Part2
+import Day21.Part1
+import Day21.Part2
+import Day19.Part1
+import Day19.Part2
 import Day08.Part1
 import Day08.Part2
+import Day22.Part1
+import Day22.Part2
+import Day25.Part1
+import Day25.Part2
 import Day07.Part1
 import Day07.Part2
+import Day24.Part1
+import Day24.Part2
+import Day20.Part1
+import Day20.Part2
 import Day03.Part1
 import Day03.Part2
 import Day11.Part1
@@ -29,6 +41,8 @@ import Day05.Part1
 import Day05.Part2
 import Day01.Part1
 import Day01.Part2
+import Day23.Part1
+import Day23.Part2
 import Day10.Part1
 import Day10.Part2
 import Day09.Part1
@@ -47,10 +61,22 @@ solveDay "13" "1" = Day13.Part1.solve
 solveDay "13" "2" = Day13.Part2.solve
 solveDay "2" "1" = Day02.Part1.solve
 solveDay "2" "2" = Day02.Part2.solve
+solveDay "21" "1" = Day21.Part1.solve
+solveDay "21" "2" = Day21.Part2.solve
+solveDay "19" "1" = Day19.Part1.solve
+solveDay "19" "2" = Day19.Part2.solve
 solveDay "8" "1" = Day08.Part1.solve
 solveDay "8" "2" = Day08.Part2.solve
+solveDay "22" "1" = Day22.Part1.solve
+solveDay "22" "2" = Day22.Part2.solve
+solveDay "25" "1" = Day25.Part1.solve
+solveDay "25" "2" = Day25.Part2.solve
 solveDay "7" "1" = Day07.Part1.solve
 solveDay "7" "2" = Day07.Part2.solve
+solveDay "24" "1" = Day24.Part1.solve
+solveDay "24" "2" = Day24.Part2.solve
+solveDay "20" "1" = Day20.Part1.solve
+solveDay "20" "2" = Day20.Part2.solve
 solveDay "3" "1" = Day03.Part1.solve
 solveDay "3" "2" = Day03.Part2.solve
 solveDay "11" "1" = Day11.Part1.solve
@@ -65,6 +91,8 @@ solveDay "5" "1" = Day05.Part1.solve
 solveDay "5" "2" = Day05.Part2.solve
 solveDay "1" "1" = Day01.Part1.solve
 solveDay "1" "2" = Day01.Part2.solve
+solveDay "23" "1" = Day23.Part1.solve
+solveDay "23" "2" = Day23.Part2.solve
 solveDay "10" "1" = Day10.Part1.solve
 solveDay "10" "2" = Day10.Part2.solve
 solveDay "9" "1" = Day09.Part1.solve

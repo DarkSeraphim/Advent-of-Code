@@ -1,4 +1,4 @@
-module Lib (Point, PointBig, newPoint, newPoint3, x, getX, y, getY, z, getZ, manhattan, neighbours, neighbours3, Range, newRange, merge, includes, overlaps, compress) where
+module Lib (Point, PointBig, newPoint, newPoint3, getX, getY, getZ, manhattan, neighbours, neighbours3, Range, newRange, merge, includes, overlaps, compress) where
 
 data PointA a = PointA {x :: a, y :: a, z :: a} deriving (Show, Eq, Ord)
 

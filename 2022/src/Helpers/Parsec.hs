@@ -1,4 +1,4 @@
-module Helpers.Parsec (number, numberInteger, parseInput, Parser, endBy1', sepBy1') where
+module Helpers.Parsec (number, numberInteger, parseInput, parseString, Parser, endBy1', sepBy1') where
     import Text.ParserCombinators.Parsec (GenParser, option, parse, (<|>), try)
     import Helpers.Input (readInt, orFail)
     import Control.Applicative (some)
@@ -41,5 +41,8 @@ module Helpers.Parsec (number, numberInteger, parseInput, Parser, endBy1', sepBy
     tryMaybe :: Parser a -> Parser (Maybe a)
     tryMaybe a = try (Just <$> a) <|> return Nothing
 
-    parseInput :: GenParser Char () a -> IO a
+    parseInput :: Parser a -> IO a
     parseInput parseFunc = (orFail . parse parseFunc "Input") =<< getContents
+
+    parseString :: Parser a -> String -> IO a
+    parseString parseFunc str = orFail $ parse parseFunc "String" str

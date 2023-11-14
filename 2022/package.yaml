@@ -42,6 +42,8 @@ executables:
     - -threaded
     - -rtsopts
     - -with-rtsopts=-N
+    - -fprof-auto
+    - -fprof-cafs
     dependencies:
     - AdventOfCode2022
   aoc-prebuild:

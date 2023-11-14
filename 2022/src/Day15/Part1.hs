@@ -2,7 +2,7 @@ module Day15.Part1 (solve) where
 import Text.Printf (printf)
 import Text.Parsec (string, endBy1, endOfLine)
 import Helpers.Parsec (number, Parser, parseInput)
-import Lib (Point, newPoint, manhattan, x, y)
+import Lib (Point, newPoint, manhattan, getX, getY)
 import Data.Set (fromList, elems)
 
 parsePoint :: Parser Point
@@ -28,11 +28,11 @@ solve = do
   let sensorPlusRadius = map sensorWithRadius sensorPlusBeacon
   let maxRadius = maximum $ map snd sensorPlusRadius
   let uniqueBeacons = elems (fromList (map snd sensorPlusBeacon))
-  let xList = map x $ concatMap toList sensorPlusBeacon
+  let xList = map getX $ concatMap toList sensorPlusBeacon
   let minX = minimum xList - maxRadius
   let maxX = maximum xList + maxRadius
   let row = 2000000 :: Int
   let found = length $ filter (\x -> any (isInRange (newPoint x row)) sensorPlusRadius) [minX..maxX]
-  let beacons = length $ filter ((==row) . y) uniqueBeacons
+  let beacons = length $ filter ((==row) . getY) uniqueBeacons
 
   printf "At y = %d we found %d locations\n" row (found - beacons)

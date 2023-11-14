@@ -1,7 +1,7 @@
 {-# LANGUAGE TupleSections #-}
 module Day12.Part1 (solve) where
 import Text.Printf (printf)
-import Lib (Point, newPoint, x, y)
+import Lib (Point, newPoint, getX, getY)
 import Data.Char (ord)
 import Data.Map (Map, (!), fromList, keys, empty, insertWith, toList)
 import qualified Data.Map as M
@@ -53,8 +53,8 @@ solve = do
   let start = getNode nodes 'S'
   let end = getNode nodes 'E'
   let path = dijkstra weights edges start
-  let maxX = maximum $ map x (keys nodes)
-  let maxY = maximum $ map y (keys nodes)
+  let maxX = maximum $ map getX (keys nodes)
+  let maxY = maximum $ map getY (keys nodes)
   let grid = map (\y -> map (\x -> func path x y) [0 .. maxX]) [0..maxY]
   let path = reverse $ fromMaybe [] $ dijkstraPath weights edges start end
   printf "Grid: \n%s\n" (intercalate "\n" grid)
