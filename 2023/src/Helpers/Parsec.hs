@@ -3,9 +3,7 @@ module Helpers.Parsec (number, numberInteger, parseInput, parseString, Parser, e
     import Helpers.Input (readInt, orFail)
     import Control.Applicative (some)
     import Text.ParserCombinators.Parsec.Char (digit, char)
-    import Text.Parsec (parserTrace)
-    import qualified Debug.Trace as Debug
-    import Debug.Trace (trace)
+    
     type Parser a = GenParser Char () a
 
     number :: Parser Int

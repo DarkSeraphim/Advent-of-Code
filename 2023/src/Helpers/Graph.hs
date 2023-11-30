@@ -1,10 +1,9 @@
 module Helpers.Graph (bfs, bfsPath, bfsPathCond, dijkstraPath, dijkstraPaths, dijkstra, dijkstra', PathResult (dist, parent)) where
 import Data.Maybe (mapMaybe)
-import Data.Map (Map, empty, findWithDefault, (!))
-import Data.Set (Set, findMin, union, deleteFindMin, fromList, notMember, member, singleton)
+import Data.Map (Map, empty, findWithDefault)
+import Data.Set (Set, union, deleteFindMin, fromList, notMember, member, singleton)
 import qualified Data.Set as S
 import qualified Data.Map as M
-import Debug.Trace (trace)
 import Data.List (sortOn)
 
 data PathResult a = PathResult {dist :: Int, parent :: a} deriving Show
@@ -15,18 +14,18 @@ rebuildPath cur res = do
   let p = parent res'
   if cur == p then Just [cur] else (cur :) <$> rebuildPath p res
 
-dijkstraPath :: Ord a => Show a => Map (a, a) Int -> Map a [a] -> a -> a -> Maybe [a]
+dijkstraPath :: Ord a => Map (a, a) Int -> Map a [a] -> a -> a -> Maybe [a]
 dijkstraPath weights edges start end = rebuildPath end res
   where res = dijkstra' (\k -> findWithDefault maxBound k weights) edges start (== end)
 
-dijkstraPaths :: Ord a => Show a => Map (a, a) Int -> Map a [a] -> [a] -> a -> [Maybe [a]]
+dijkstraPaths :: Ord a => Map (a, a) Int -> Map a [a] -> [a] -> a -> [Maybe [a]]
 dijkstraPaths weights edges starts end = map (`rebuildPath` res) starts
   where res = dijkstra' (\k -> findWithDefault maxBound k weights) edges end (const False)
 
-dijkstra :: Ord a => Show a => Map (a, a) Int -> Map a [a] -> a -> Map a (PathResult a)
+dijkstra :: Ord a => Map (a, a) Int -> Map a [a] -> a -> Map a (PathResult a)
 dijkstra weights edges start = dijkstra' (\k -> findWithDefault maxBound k weights) edges start (const False)
 
-dijkstra' :: Ord a => Show a => ((a, a) -> Int) -> Map a [a] -> a -> (a -> Bool) -> Map a (PathResult a)
+dijkstra' :: Ord a => ((a, a) -> Int) -> Map a [a] -> a -> (a -> Bool) -> Map a (PathResult a)
 dijkstra' wfunc edges start done = res
   where res = dijkstra'' wfunc edges S.empty (singleton (0, start, start)) done
 
@@ -35,21 +34,21 @@ dijkstra'' :: Ord a => ((a, a) -> Int) -> Map a [a] -> Set a -> Set (Int, a, a) 
 dijkstra'' wfunc edges visited queue done
   | null queue = empty
   | cur `member` visited = dijkstra'' wfunc edges visited queue' done
-  | done cur = M.singleton cur (PathResult w parent)
-  | otherwise = M.insert cur (PathResult w parent) $ dijkstra'' wfunc edges visited' queue'' done
-  where ((w, cur, parent), queue') = deleteFindMin queue
+  | done cur = M.singleton cur (PathResult w parent')
+  | otherwise = M.insert cur (PathResult w parent') $ dijkstra'' wfunc edges visited' queue'' done
+  where ((w, cur, parent'), queue') = deleteFindMin queue
         visited' = S.insert cur visited
         newEdges = filter (`notMember` visited') (findWithDefault [] cur edges)
         queue'' = queue' `union` fromList (map (\v -> (w + wfunc (cur, v), v, cur)) newEdges)
 
-bfs :: Ord a => Show a => Map a [a] -> a -> Map a (PathResult a)
+bfs :: Ord a => Map a [a] -> a -> Map a (PathResult a)
 bfs edges start = dijkstra' (const 1) edges start (const False)
 
-bfsPath :: Ord a => Show a => Map a [a] -> a -> a -> Maybe [a]
+bfsPath :: Ord a => Map a [a] -> a -> a -> Maybe [a]
 bfsPath edges start end = rebuildPath end res
   where res = dijkstra' (const 1) edges start (== end)
 
-bfsPathCond :: Ord a => Show a => Map a [a] -> a -> (a -> Bool) -> Maybe [a]
+bfsPathCond :: Ord a => Map a [a] -> a -> (a -> Bool) -> Maybe [a]
 bfsPathCond edges start endCond
   | null paths = Nothing
   | otherwise = Just $ minimum $ sortOn length paths
