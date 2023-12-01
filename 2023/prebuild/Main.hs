@@ -1,10 +1,9 @@
 import Data.List (elemIndex, intercalate)
 import Helpers.Input (maybeIO, readInt)
 import System.Directory (listDirectory)
-import Debug.Trace
-import System.IO (openFile, IOMode (ReadWriteMode), hGetContents, hPutStr, hClose)
 import Text.Printf (printf)
 
+isDay :: String -> [String]
 isDay ('D':'a':'y':number) = [number]
 isDay _ = []
 
@@ -12,10 +11,11 @@ getPart :: [Char] -> [Char] -> [(String, String, [Char])]
 getPart day ('P':'a':'r':'t':number) = [(day, number, "Day" ++ day ++ ".Part" ++ number)]
 getPart _ _ = []
 
+removeExt :: String -> String
 removeExt file =
-  let x = elemIndex '.' file in
-  case x of
-    Just x -> take x file
+  let dotIdx = elemIndex '.' file in
+  case dotIdx of
+    Just idx -> take idx file
     Nothing -> file
 
 
@@ -24,13 +24,17 @@ findDays = concatMap isDay <$> listDirectory "src/"
 findParts :: [Char] -> IO [(String, String, [Char])]
 findParts day = concatMap (getPart day . removeExt) <$> listDirectory ("src/Day" ++ day)
 
-buildImport mod = "import " ++ mod
+buildImport :: String -> String
+buildImport mod' = "import " ++ mod'
+
 buildSolve :: (String, String, String) -> String
-buildSolve (day, part, mod) = printf "solveDay \"%s\" \"%s\" = %s.solve" d part mod
+buildSolve (day, part, mod') = printf "solveDay \"%s\" \"%s\" = %s.solve" d part mod'
   where d = show (readInt day)
 
-getMod (_, _, mod) = mod
+getMod :: (String, String, String) -> String
+getMod (_, _, mod') = mod'
 
+main :: IO ()
 main = do
   contents <- lines <$> readFile "app/Main.hs.template"
   start <- maybeIO $ elemIndex "-- AUTOGEN-START" contents
