@@ -1,7 +1,6 @@
-module Main where
+module Main (main) where
 
 import Text.Printf
-import Lib
 import System.Environment (getArgs)
 
 -- Generate solve implementations by script, as Haskell doesn't have a "proper"
@@ -9,7 +8,7 @@ import System.Environment (getArgs)
 -- AUTOGEN-START
 -- AUTOGEN-END
 
--- solve :: String -> String -> IO ()
+-- solveDay :: String -> String -> IO ()
 solveDay d p = printf "Day '%s' or part '%s' of day not found" d p
 
 getDay :: [String] -> String

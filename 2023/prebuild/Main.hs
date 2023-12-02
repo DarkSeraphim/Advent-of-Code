@@ -42,5 +42,5 @@ main = do
   days <- findDays
   parts <- concat <$> mapM findParts days
   let imports = map (buildImport . getMod) parts
-  let solves = map buildSolve parts
+  let solves = "solveDay :: String -> String -> IO ()" : map buildSolve parts
   writeFile "app/Main.hs" $ intercalate "\n" (take (start + 1) contents ++ imports ++ solves ++ drop end contents)
