@@ -1,10 +1,10 @@
 if [ ! -z "$DEBUG" ]; then
-  stack build --trace --profile --executable-profiling --library-profiling
+  stack build --trace --profile --executable-profiling --library-profiling --no-executable-stripping
   stack run --trace --profile aoc-prebuild
   stack run --trace --profile -- +RTS -xc -RTS $1 $2
 else
   echo "Building..."
-  stack run aoc-prebuild > /dev/null 2>&1
+  stack run aoc-prebuild --no-executable-stripping > /dev/null 2>&1
   echo "Running..."
-  stack run $1 $2 2> /dev/null
+  stack run --no-executable-stripping $1 $2 2> /dev/null
 fi

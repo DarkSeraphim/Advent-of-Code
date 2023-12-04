@@ -1,15 +1,16 @@
-module Helpers.Parsec (number, numberInteger, parseInput, parseString, Parser, endBy1', sepBy1') where
-    import Text.ParserCombinators.Parsec (GenParser, option, parse, (<|>), try)
+module Helpers.Parsec (number, numberInteger, parseInput, parseInputWithState, parseString, Parser, StatefulParser, endBy1', sepBy1') where
+    import Text.ParserCombinators.Parsec (GenParser, option, parse, (<|>), try, runParser)
     import Helpers.Input (readInt, orFail)
     import Control.Applicative (some)
     import Text.ParserCombinators.Parsec.Char (digit, char)
     
-    type Parser a = GenParser Char () a
+    type Parser a = StatefulParser () a
+    type StatefulParser s a = GenParser Char s a
 
-    number :: Parser Int
+    number :: StatefulParser a Int
     number = number' readInt
 
-    number' :: Num a => (String -> a) -> Parser a
+    number' :: Num a => (String -> a) -> StatefulParser s a
     number' parser = do
         sign <- option '+' $ char '-'
         let mult = case sign of
@@ -18,17 +19,17 @@ module Helpers.Parsec (number, numberInteger, parseInput, parseString, Parser, e
                     _ -> error "Wat."
         (mult *) . parser <$> some digit
 
-    numberInteger :: Parser Integer
+    numberInteger :: StatefulParser s Integer
     numberInteger = number' read 
 
-    endBy1' :: Show a => Parser a -> Parser sep -> Parser [a]
+    endBy1' :: Show a => StatefulParser s a -> StatefulParser s sep -> StatefulParser s [a]
     endBy1' a sep = do
         v <- tryMaybe (a <* sep)
         case v of
             Just v' -> (v' :) <$> endBy1' a sep
             Nothing -> return []
 
-    sepBy1' :: Parser a -> Parser sep -> Parser [a]
+    sepBy1' :: StatefulParser s a -> StatefulParser s sep -> StatefulParser s [a]
     sepBy1' a sep = (:) <$> a <*> f
         where f = do
                     v <- tryMaybe sep
@@ -36,11 +37,14 @@ module Helpers.Parsec (number, numberInteger, parseInput, parseString, Parser, e
                         Just _ -> sepBy1' a sep
                         Nothing -> return []
 
-    tryMaybe :: Parser a -> Parser (Maybe a)
+    tryMaybe :: StatefulParser s a -> StatefulParser s (Maybe a)
     tryMaybe a = try (Just <$> a) <|> return Nothing
 
-    parseInput :: Parser a -> IO a
+    parseInput :: StatefulParser () a -> IO a
     parseInput parseFunc = (orFail . parse parseFunc "Input") =<< getContents
 
-    parseString :: Parser a -> String -> IO a
+    parseInputWithState :: StatefulParser s a -> s -> IO a
+    parseInputWithState parseFunc state = (orFail . runParser parseFunc state "input") =<< getContents
+
+    parseString :: StatefulParser () a -> String -> IO a
     parseString parseFunc str = orFail $ parse parseFunc "String" str
