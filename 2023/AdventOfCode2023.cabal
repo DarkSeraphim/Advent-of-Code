@@ -42,7 +42,8 @@ library
       Helpers.List
       Helpers.Output
       Helpers.Parsec
-      Lib
+      Helpers.Point
+      Helpers.Range
   other-modules:
       Paths_AdventOfCode2023
   autogen-modules:

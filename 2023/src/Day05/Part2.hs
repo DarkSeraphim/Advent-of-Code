@@ -1,15 +1,13 @@
 module Day05.Part2 (solve) where
 import Text.Printf (printf)
 import Helpers.Parsec (Parser, number, parseInput)
+import Helpers.Range (Range, newRange, intersectLeft, translate, getMin, compress, overlaps, getMax)
 import Text.Parsec (string, sepBy1, char, endOfLine, sepEndBy1, count, manyTill)
-import Lib (Range, newRange, includes, intersectLeft, translate, getMin, compress, overlaps, getMax)
 import Text.Parsec.Char (anyChar)
 import Text.ParserCombinators.Parsec (try)
-import Data.Foldable (find)
 import Helpers.List (chunksOf)
-import Data.Maybe (mapMaybe, fromJust)
+import Data.Maybe (fromJust)
 import GHC.Exts (sortWith)
-import Debug.Trace (trace)
 
 type RangeI = Range Int
 data Mapper = Mapper { delta :: Int, src :: RangeI} deriving Show
@@ -32,19 +30,6 @@ almanac = do
   seeds' <- seeds <* count 2 endOfLine
   mappings' <- (manyTill anyChar (try endOfLine) *> mappings) `sepEndBy1` endOfLine
   return (seeds', mappings')
-
-applies :: Int -> Mapper -> Bool
-applies i m = includes i (src m)
-
-applyMapping :: Int -> [Mapper] -> Int
-applyMapping n mappers = case mapperM of
-                           Just mapper -> n + delta mapper
-                           Nothing -> n
-  where mapperM = find (applies n) mappers
-
-
-applyMappings :: [[Mapper]] -> Int -> Int
-applyMappings mappers seed = foldl applyMapping seed mappers
 
 expand :: [Int] -> RangeI
 expand [a, b] = newRange a (a + b - 1)
@@ -70,15 +55,12 @@ applyMapping'' (m:rest) r
 
 
 applyMapping' :: [RangeI] -> [Mapper] -> [RangeI]
-applyMapping' r ms = trace ("# intervals: " ++ (show res)) res
-  where res = trace (show foo) $ compress $ sortWith getMin $ concat foo
-        foo = map (applyMapping'' ms) r
+applyMapping' r ms = compress $ sortWith getMin $ concatMap (applyMapping'' ms) r
 
 solve :: IO ()
 solve = do
   (seeds', mappings') <- parseInput almanac
   let mappings'' = map (sortWith (getMin . src)) mappings'
   let seeds'' = map expand $ chunksOf 2 seeds'
--- let locations = map (applyMappings mappings') seeds'
   let locations = map getMin $ foldl applyMapping' seeds'' mappings''
   printf "Almanac: %d" (minimum locations)

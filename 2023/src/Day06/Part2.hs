@@ -1,7 +1,7 @@
 module Day06.Part2 (solve) where
 import Text.Printf (printf)
-import Helpers.Parsec (spaces, Parser, number, parseInput)
-import Text.Parsec (sepEndBy1, string, endOfLine, noneOf, many1)
+import Helpers.Parsec (spaces, Parser, parseInput)
+import Text.Parsec (sepEndBy1, string, endOfLine, many1)
 import Helpers.Input (readInt)
 import Text.Parsec.Char (digit)
 

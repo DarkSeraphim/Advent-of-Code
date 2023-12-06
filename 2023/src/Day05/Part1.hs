@@ -1,8 +1,8 @@
 module Day05.Part1 (solve) where
 import Text.Printf (printf)
 import Helpers.Parsec (Parser, number, parseInput)
+import Helpers.Range (Range, newRange, includes, getMin)
 import Text.Parsec (string, sepBy1, char, endOfLine, sepEndBy1, count, manyTill)
-import Lib (Range, newRange, includes, getMin)
 import Text.Parsec.Char (anyChar)
 import Text.ParserCombinators.Parsec (try)
 import Data.Foldable (find)
