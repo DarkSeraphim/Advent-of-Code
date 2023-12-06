@@ -1,8 +1,9 @@
-module Helpers.Parsec (number, numberInteger, parseInput, parseInputWithState, parseString, Parser, StatefulParser, endBy1', sepBy1') where
-    import Text.ParserCombinators.Parsec (GenParser, option, parse, (<|>), try, runParser)
+module Helpers.Parsec (number, numberInteger, parseInput, parseInputWithState, parseString, Parser, StatefulParser, endBy1', sepBy1', spaces) where
+    import Text.ParserCombinators.Parsec (GenParser, option, parse, (<|>), try, runParser, many1)
     import Helpers.Input (readInt, orFail)
     import Control.Applicative (some)
     import Text.ParserCombinators.Parsec.Char (digit, char)
+    import Control.Monad (void)
     
     type Parser a = StatefulParser () a
     type StatefulParser s a = GenParser Char s a
@@ -20,7 +21,10 @@ module Helpers.Parsec (number, numberInteger, parseInput, parseInputWithState, p
         (mult *) . parser <$> some digit
 
     numberInteger :: StatefulParser s Integer
-    numberInteger = number' read 
+    numberInteger = number' read
+
+    spaces :: StatefulParser a ()
+    spaces = void (many1 (char ' '))
 
     endBy1' :: Show a => StatefulParser s a -> StatefulParser s sep -> StatefulParser s [a]
     endBy1' a sep = do
