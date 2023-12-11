@@ -1,6 +1,5 @@
 module Helpers.Input (split, replace, readIntChar, readInt, maybeIO, orFail) where
 
-
 split :: Char -> String -> [String]
 split c (x:xs)
     | x == c = [] : split c xs
