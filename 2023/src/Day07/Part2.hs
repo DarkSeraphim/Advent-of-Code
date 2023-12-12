@@ -6,7 +6,6 @@ import Data.Char (ord)
 import Helpers.List (frequency)
 import Data.Map (elems)
 import Data.List (sortBy, partition)
-import Debug.Trace (trace)
 
 data HandType = HighCard | OnePair | TwoPair | ThreeOfAKind | FullHouse | FourOfAKind | FiveOfAKind deriving (Enum, Eq, Ord, Show)
 

@@ -1,4 +1,5 @@
-module Helpers.Graph (bfs, bfsPath, bfsPathCond, dijkstraPath, dijkstraPaths, dijkstra, dijkstra', PathResult (dist, parent)) where
+{-# LANGUAGE TupleSections #-}
+module Helpers.Graph (bfs, bfsPath, bfsPathCond, dijkstraPath, dijkstraPaths, dijkstra, dijkstra', PathResult (dist, parent), rebuildPaths, computeDistances) where
 import Data.Maybe (mapMaybe)
 import Data.Map (Map, empty, findWithDefault)
 import Data.Set (Set, union, deleteFindMin, fromList, notMember, member, singleton)
@@ -8,11 +9,23 @@ import Data.List (sortOn)
 
 data PathResult a = PathResult {dist :: Int, parent :: a} deriving Show
 
+rebuildPaths :: Ord a => [a] -> Map a (PathResult a) -> Map a [a]
+rebuildPaths as results = M.fromList $ mapMaybe (\a -> (a,) <$> rebuildPath a results) as
+
 rebuildPath :: Ord a => a -> Map a (PathResult a) -> Maybe [a]
 rebuildPath cur res = do
   res' <- M.lookup cur res
   let p = parent res'
   if cur == p then Just [cur] else (cur :) <$> rebuildPath p res
+
+computeDistances :: Ord a => [a] -> Map a (PathResult a) -> Map a Int
+computeDistances as results = M.fromList $ mapMaybe (\a -> (a,) <$> computeDistance a results) as
+
+
+computeDistance :: Ord a => a -> Map a (PathResult a) -> Maybe Int
+computeDistance cur res = do
+  res' <- M.lookup cur res
+  return $ dist res' 
 
 dijkstraPath :: Ord a => Map (a, a) Int -> Map a [a] -> a -> a -> Maybe [a]
 dijkstraPath weights edges start end = rebuildPath end res
