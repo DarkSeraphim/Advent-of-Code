@@ -19,7 +19,7 @@ pBlocks :: Parser [Block]
 pBlocks = pLines `sepEndBy1` endOfLine
 
 countSmudges' :: String -> String -> Int
-countSmudges' a b = length $ filter (uncurry (/=)) $ zip a b
+countSmudges' a b = length  $ filter (uncurry (/=)) $ zip a b
 
 countSmudges :: [String] -> [String] -> Int
 countSmudges left right = sum $ zipWith countSmudges' (reverse left) right
@@ -32,7 +32,7 @@ findReflection i block
 
 
 findReflectionAndOrientation :: Block -> (Orientation, Int)
-findReflectionAndOrientation block = fromJust $ (((Horizontal, ) <$> hor) <|> ((Vertical, ) <$> ver))
+findReflectionAndOrientation block = fromJust (((Horizontal, ) <$> hor) <|> ((Vertical, ) <$> ver))
   where hor = findReflection 1 (transpose block)
         ver = findReflection 1 block
 
