@@ -3,7 +3,6 @@ import Text.Printf (printf)
 import Helpers.Parsec (Parser, number, parseInput)
 import Text.Parsec (many1, oneOf, char, sepBy1, sepEndBy1, endOfLine)
 import Data.List (uncons, intercalate)
-import Debug.Trace (trace)
 import Helpers.List (cycleN)
 import Data.Map (Map, (!), member, insert, empty)
 
