@@ -1,5 +1,5 @@
 {-# LANGUAGE TupleSections #-}
-module Helpers.Graph (bfs, bfsPath, bfsPathCond, dijkstraPath, dijkstraPaths, dijkstra, dijkstra', PathResult (dist, parent), rebuildPaths, computeDistances) where
+module Helpers.Graph (bfs, bfsPath, bfsPathCond, dijkstraPath, dijkstraPaths, dijkstra, dijkstra', dijkstra'', dijkstra''', PathResult (dist, parent), rebuildPaths, computeDistance, computeDistances) where
 import Data.Maybe (mapMaybe)
 import Data.Map (Map, empty, findWithDefault)
 import Data.Set (Set, union, deleteFindMin, fromList, notMember, member, singleton)
@@ -25,7 +25,7 @@ computeDistances as results = M.fromList $ mapMaybe (\a -> (a,) <$> computeDista
 computeDistance :: Ord a => a -> Map a (PathResult a) -> Maybe Int
 computeDistance cur res = do
   res' <- M.lookup cur res
-  return $ dist res' 
+  return $ dist res'
 
 dijkstraPath :: Ord a => Map (a, a) Int -> Map a [a] -> a -> a -> Maybe [a]
 dijkstraPath weights edges start end = rebuildPath end res
@@ -44,15 +44,20 @@ dijkstra' wfunc edges start done = res
 
 -- | This implementation currently doesn't stop at the end node, but computes the full graph
 dijkstra'' :: Ord a => ((a, a) -> Int) -> Map a [a] -> Set a -> Set (Int, a, a) -> (a -> Bool) -> Map a (PathResult a)
-dijkstra'' wfunc edges visited queue done
+dijkstra'' wfunc edges = dijkstra''' wfunc (\k -> findWithDefault [] k edges)
+
+-- | This implementation currently doesn't stop at the end node, but computes the full graph
+dijkstra''' :: Ord a => ((a, a) -> Int) -> (a -> [a]) -> Set a -> Set (Int, a, a) -> (a -> Bool) -> Map a (PathResult a)
+dijkstra''' wfunc efunc visited queue done
   | null queue = empty
-  | cur `member` visited = dijkstra'' wfunc edges visited queue' done
+  | cur `member` visited = dijkstra''' wfunc efunc visited queue' done
   | done cur = M.singleton cur (PathResult w parent')
-  | otherwise = M.insert cur (PathResult w parent') $ dijkstra'' wfunc edges visited' queue'' done
+  | otherwise = M.insert cur (PathResult w parent') $ dijkstra''' wfunc efunc visited' queue'' done
   where ((w, cur, parent'), queue') = deleteFindMin queue
         visited' = S.insert cur visited
-        newEdges = filter (`notMember` visited') (findWithDefault [] cur edges)
+        newEdges = filter (`notMember` visited') (efunc cur)
         queue'' = queue' `union` fromList (map (\v -> (w + wfunc (cur, v), v, cur)) newEdges)
+
 
 bfs :: Ord a => Map a [a] -> a -> Map a (PathResult a)
 bfs edges start = dijkstra' (const 1) edges start (const False)

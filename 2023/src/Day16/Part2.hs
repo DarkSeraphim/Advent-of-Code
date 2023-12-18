@@ -7,7 +7,6 @@ import Data.Set (Set, insert, empty)
 import qualified Data.Set as S
 import Data.Map (Map, (!), keys)
 import qualified Data.Map as M
-import Helpers.Output (showGridWithKey)
 
 data Reflector = Hor | Ver | For | Back | Empty deriving (Eq, Show)
 
@@ -58,5 +57,4 @@ solve = do
                  ]
 
   let visited = foldl (\best (start, dir) -> max best $ length $ S.map fst $ walk start dir grid empty) minBound starting
---  printf "Energized grid looks like this:\n\n%s\n\n" (showGridWithKey grid (\p _ -> if S.member p visited then '#' else '.') '.')
   printf "# of energized tiles is %d\n" visited
