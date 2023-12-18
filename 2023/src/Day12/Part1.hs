@@ -3,7 +3,6 @@ import Text.Printf (printf)
 import Helpers.Parsec (Parser, number, parseInput)
 import Text.Parsec (many1, oneOf, char, sepBy1, sepEndBy1, endOfLine)
 import Data.List (uncons)
-import Debug.Trace (trace)
 
 data Condition = Working | Broken | Unknown deriving (Eq, Show)
 
@@ -35,19 +34,19 @@ match conds num
 
 countPossibilities :: [Condition] -> [Int] -> Int
 countPossibilities conds broken
-  | null broken = if any (==Broken) conds then 0 else 1
+  | null broken = if Broken `elem` conds then 0 else 1
   -- Not enough places left for our broken pieces
-  | length conds < (trace ("Cannot solve for " ++ (show broken) ++ " using conds " ++ (show conds)) $ sum broken + length broken - 1) = 0
+  | length conds < sum broken + length broken - 1 = 0
   -- We're starting with working pieces, drop those
   | head conds == Working = countPossibilities (dropWhile (== Working) conds) broken
-  | head conds == Broken = case m of 
+  | head conds == Broken = case m of
                              Just cs -> countPossibilities cs (tail broken)
                              Nothing -> 0
   -- Let's match a broken piece, and ensure we have a working piece after it
   | otherwise = (case m of
                      Just cs -> countPossibilities cs (tail broken)
                      _ -> 0
-                  ) + countPossibilities (tail conds) broken  
+                  ) + countPossibilities (tail conds) broken
   where m = match conds (head broken)
 
 

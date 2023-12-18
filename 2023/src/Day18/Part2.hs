@@ -1,0 +1,55 @@
+module Day18.Part2 (solve) where
+import Text.Printf (printf)
+import Helpers.Parsec (Parser, number, parseInput)
+import Text.Parsec (char, (<|>), many1, string, endOfLine, sepEndBy1)
+import Data.Functor (($>))
+import Text.Parsec.Char (noneOf)
+import Helpers.Point (Point, newPoint, getX, getY)
+import Numeric (readHex)
+
+data Dir = L | R | U | D
+
+vec :: Int -> Dir -> Point
+vec n L = newPoint (-n)  0
+vec n R = newPoint   n   0
+vec n U = newPoint   0   n
+vec n D = newPoint   0 (-n)
+
+pDir :: Parser Dir
+pDir = (char 'L' $> L) <|> (char 'R' $> R) <|> (char 'U' $> U) <|> (char 'D' $> D)
+
+pLine :: Parser (Dir, Int, String)
+pLine = (,,) <$> (pDir <* char ' ') <*> (number <* string " (#") <*> many1 (noneOf ")") <* char ')'
+
+pInst :: Parser [(Dir, Int, String)]
+pInst = pLine `sepEndBy1` endOfLine
+
+poly :: Point -> [(Dir, Int, String)] -> [Point]
+poly p [] = [p]
+poly p ((d, n, _):is) = p : poly (p + vec n d) is
+
+area :: [Point] -> Int
+area polygon = abs $ sum (zipWith (\a b -> (getX b + getX a) * (getY b - getY a)) (last polygon : polygon) polygon) `div` 2
+
+fromChar :: Char -> Dir
+fromChar '0' = R
+fromChar '1' = D
+fromChar '2' = L
+fromChar '3' = U
+fromChar  _  = error "Invalid hex"
+
+interpretHex :: (Dir, Int, String) -> (Dir, Int, String)
+interpretHex (_, _, str) = (fromChar (last str), fst (head (readHex (take 5 str))), "")
+
+len :: (Dir, Int, String) -> Int
+len (_, b, _) = b
+
+
+solve :: IO ()
+solve = do
+  inst <- parseInput pInst
+  let inst' = map interpretHex inst
+  let start = newPoint 0 0
+  let polygon' = reverse (poly start inst')
+  printf "The area is %d\n" (area (start : polygon') + (sum (map len inst') `div` 2))
+
