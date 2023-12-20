@@ -1,4 +1,4 @@
-module Helpers.Range (Range, newRange, getMin, getMax, merge, includes, overlaps, intersectLeft, contains, compress, translate) where
+module Helpers.Range (Range, newRange, getMin, getMax, merge, includes, overlaps, intersectLeft, contains, compress, translate, size) where
 
 data Range a = Range a a deriving (Eq, Ord, Show)
 newRange :: a -> a -> Range a
@@ -40,3 +40,6 @@ compress (a:b:rest) =
 
 translate :: Num a => a -> Range a -> Range a
 translate n (Range a b) = newRange (a + n) (b + n)
+
+size :: Num a => Range a -> a
+size r = getMax r - getMin r + 1
