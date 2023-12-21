@@ -30,9 +30,6 @@ poly p ((d, n, _):is) = p : poly (p + vec n d) is
 area :: [Point] -> Int
 area polygon = abs $ sum (zipWith (\a b -> (getX b + getX a) * (getY b - getY a)) (last polygon : polygon) polygon) `div` 2
 
-points :: [Point] -> Int
-points path = area path + (length path `div` 2) - 1
-
 len :: (Dir, Int, String) -> Int
 len (_, b, _) = b
 

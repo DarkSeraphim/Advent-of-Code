@@ -44,7 +44,6 @@ interpretHex (_, _, str) = (fromChar (last str), fst (head (readHex (take 5 str)
 len :: (Dir, Int, String) -> Int
 len (_, b, _) = b
 
-
 solve :: IO ()
 solve = do
   inst <- parseInput pInst
