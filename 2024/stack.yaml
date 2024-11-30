@@ -50,6 +50,11 @@ packages:
 
 # Control whether we use the GHC we find on the path
 system-ghc: true
+
+notify-if-nix-on-path: false
+
+nix:
+  enable: false
 #
 # Require a specific version of Stack, using version ranges
 # require-stack-version: -any # Default
