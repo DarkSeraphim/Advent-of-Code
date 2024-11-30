@@ -1,5 +1,9 @@
 YEAR=${YEAR:-$(cat .year)}
 
+if [ -z "$AOC_SESSION" ] && [ -f .session ] ; then
+  source .session
+fi
+
 if [ -z "$AOC_SESSION" ]; then
   echo "Please set AOC_SESSION to your session cookie, otherwise I can't get your inputs"
   exit 1
