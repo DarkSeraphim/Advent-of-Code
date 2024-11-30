@@ -67,6 +67,8 @@ library
       Day20.Part2
       Day21.Part1
       Day21.Part2
+      Day22.Part1
+      Day22.Part2
       Helpers.Graph
       Helpers.Input
       Helpers.List
