@@ -1,6 +1,8 @@
-module Helpers.Input (split, replace, readIntChar, readInt, maybeIO, orFail, toPointMap) where
+{-# LANGUAGE TupleSections #-}
+module Helpers.Input (split, replace, readIntChar, readInt, maybeIO, orFail, toPointMap, toPointMapMaybe) where
 import Helpers.Point (Point, newPoint)
 import Data.Map (Map, fromList)
+import Data.Maybe (catMaybes)
 
 split :: Char -> String -> [String]
 split c (x:xs)
@@ -34,6 +36,9 @@ orFail :: (Show a) => Either a b -> IO b
 orFail (Left s) = fail (show s)
 orFail (Right b) = return b
 
-toPointMap :: (a -> b) -> [[a]] -> Map Point b
-toPointMap f d = fromList [(newPoint x y, f ((d !! y) !! x )) | y <- axis, x <- [0 .. length (d !! y) - 1]]
+toPointMapMaybe :: (a -> Maybe b) -> [[a]] -> Map Point b
+toPointMapMaybe f d = fromList $ catMaybes [(newPoint x y,) <$>  f ((d !! y) !! x) | y <- axis, x <- [0 .. length (d !! y) - 1]]
   where axis = [0 .. (length d - 1)]
+
+toPointMap :: (a -> b) -> [[a]] -> Map Point b
+toPointMap f = toPointMapMaybe (Just . f) 
