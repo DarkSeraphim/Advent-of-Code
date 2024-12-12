@@ -6,6 +6,8 @@ import System.Environment (getArgs)
 -- Generate solve implementations by script, as Haskell doesn't have a "proper"
 -- way to generate imports?
 -- AUTOGEN-START
+import Day11.Part1
+import Day11.Part2
 import Day03.Part1
 import Day03.Part2
 import Day05.Part1
@@ -27,6 +29,8 @@ import Day10.Part2
 import Day08.Part1
 import Day08.Part2
 solveDay :: String -> String -> IO ()
+solveDay "11" "1" = Day11.Part1.solve
+solveDay "11" "2" = Day11.Part2.solve
 solveDay "3" "1" = Day03.Part1.solve
 solveDay "3" "2" = Day03.Part2.solve
 solveDay "5" "1" = Day05.Part1.solve
