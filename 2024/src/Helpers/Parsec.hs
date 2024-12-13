@@ -8,7 +8,7 @@ import Control.Monad (void)
 import Text.Parsec.Pos (initialPos, sourceLine)
 import Helpers.Point (Point, newPoint)
 import Data.Map (Map, fromList)
-import Text.Parsec (noneOf, endOfLine, sepEndBy1)
+import Text.Parsec (noneOf, endOfLine, sepEndBy1, oneOf)
 import Data.Maybe (catMaybes)
     
 type Parser a = StatefulParser () a
@@ -19,7 +19,7 @@ number = number' readInt
 
 number' :: Num a => (String -> a) -> StatefulParser s a
 number' parser = do
-    sign <- option '+' $ char '-'
+    sign <- option '+' $ oneOf "-+"
     let mult = case sign of
                 '+' -> 1
                 '-' -> -1
