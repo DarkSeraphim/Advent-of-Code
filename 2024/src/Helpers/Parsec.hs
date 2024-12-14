@@ -1,5 +1,5 @@
 {-# LANGUAGE TupleSections #-}
-module Helpers.Parsec (number, numberInteger, parseInput, parseInputWithState, parseGrid, parseGridMaybe, parseString, Parser, StatefulParser, endBy1', sepBy1', spaces) where
+module Helpers.Parsec (number, numberInteger, parseInput, parseInputWithState, parseGrid, parseGridMaybe, parseString, parseFile, Parser, StatefulParser, endBy1', sepBy1', spaces) where
 import Text.ParserCombinators.Parsec (GenParser, option, parse, (<|>), try, runParser, many1, SourcePos, getPosition, sourceColumn)
 import Helpers.Input (readInt, orFail)
 import Control.Applicative (some)
@@ -10,6 +10,7 @@ import Helpers.Point (Point, newPoint)
 import Data.Map (Map, fromList)
 import Text.Parsec (noneOf, endOfLine, sepEndBy1, oneOf)
 import Data.Maybe (catMaybes)
+import System.IO (IOMode(ReadMode), openFile, hGetContents)
     
 type Parser a = StatefulParser () a
 type StatefulParser s a = GenParser Char s a
@@ -72,3 +73,9 @@ parseGridMaybe f = fromList <$> (`parseInputWithState` initialPos "input") (pars
 
 parseString :: StatefulParser () a -> String -> IO a
 parseString parseFunc str = orFail $ parse parseFunc "String" str
+
+parseFile :: StatefulParser () a -> String -> IO a
+parseFile parseFunc file = do
+    handle <- openFile file ReadMode
+    contents <- hGetContents handle
+    parseString parseFunc contents

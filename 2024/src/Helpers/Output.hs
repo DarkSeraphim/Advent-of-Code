@@ -2,10 +2,12 @@ module Helpers.Output (clearScreen, clearLine, showGrid, showGridWithKey) where
 import Data.Map (Map, (!?), keys)
 import Helpers.Point (Point, getX, newPoint, getY)
 import Data.List (intercalate)
+import Text.Printf (printf)
+import System.IO (hPutStr, stdin, stdout)
 clearScreen :: IO ()
-clearScreen = print "\033[2J"
+clearScreen = hPutStr stdout "\ESC[2J\ESC]1337;ClearScrollback\007"
 clearLine :: IO ()
-clearLine = print "\033[2K\r"
+clearLine = printf "\033[2K\r"
 
 
 showGrid :: Map Point a -> (a -> Char) -> Char -> String
