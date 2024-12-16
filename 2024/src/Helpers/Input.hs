@@ -1,5 +1,5 @@
 {-# LANGUAGE TupleSections #-}
-module Helpers.Input (split, replace, readIntChar, readInt, maybeIO, orFail, toPointMap, toPointMapMaybe) where
+module Helpers.Input (split, replace, readIntChar, readInt, maybeIO, orFail, toPointMap, toPointMapMaybe, toPointMapMaybeWithKey) where
 import Helpers.Point (Point, newPoint)
 import Data.Map (Map, fromList)
 import Data.Maybe (catMaybes)
@@ -37,8 +37,10 @@ orFail (Left s) = fail (show s)
 orFail (Right b) = return b
 
 toPointMapMaybe :: (a -> Maybe b) -> [[a]] -> Map Point b
-toPointMapMaybe f d = fromList $ catMaybes [(newPoint x y,) <$>  f ((d !! y) !! x) | y <- axis, x <- [0 .. length (d !! y) - 1]]
+toPointMapMaybe f = toPointMapMaybeWithKey (\_ a -> f a)
+toPointMapMaybeWithKey :: (Point -> a -> Maybe b) -> [[a]] -> Map Point b
+toPointMapMaybeWithKey f d = fromList $ catMaybes [(newPoint x y,) <$>  f (newPoint x y) ((d !! y) !! x) | y <- axis, x <- [0 .. length (d !! y) - 1]]
   where axis = [0 .. (length d - 1)]
 
 toPointMap :: (a -> b) -> [[a]] -> Map Point b
-toPointMap f = toPointMapMaybe (Just . f) 
+toPointMap f = toPointMapMaybe (Just . f)
