@@ -1,5 +1,5 @@
 {-# LANGUAGE TupleSections #-}
-module Helpers.Graph (bfs, bfsPath, bfsPathCond, dijkstraPath, dijkstraPaths, dijkstra, dijkstra', dijkstra'', dijkstra''', PathResult (dist, parent), rebuildPaths, rebuildAllPaths, computeDistances) where
+module Helpers.Graph (bfs, bfsPath, bfsPathDyn, bfsPathCond, dijkstraPath, dijkstraPaths, dijkstra, dijkstra', dijkstra'', dijkstra''', PathResult (dist, parent), rebuildPaths, rebuildAllPaths, computeDistances) where
 import Data.Maybe (mapMaybe)
 import Data.Map (Map, empty, findWithDefault)
 import Data.Set (Set, union, deleteFindMin, fromList, notMember, member, singleton)
@@ -48,7 +48,7 @@ dijkstra weights edges start = dijkstra' (\k -> findWithDefault maxBound k weigh
 
 dijkstra' :: Show a => Ord a => ((a, a) -> Int) -> Map a [a] -> a -> (a -> Bool) -> Map a (PathResult a)
 dijkstra' wfunc edges start done = res
-  where res = dijkstra'' wfunc edges S.empty (singleton (0, start, start)) done
+  where res = dijkstra'' wfunc edges  S.empty (singleton (0, start, start))done
 
 -- | This implementation currently doesn't stop at the end node, but computes the full graph
 dijkstra'' :: Show a => Ord a => ((a, a) -> Int) -> Map a [a] -> Set a -> Set (Int, a, a) -> (a -> Bool) -> Map a (PathResult a)
@@ -78,6 +78,10 @@ bfs edges start = dijkstra' (const 1) edges start (const False)
 bfsPath :: Show a => Ord a => Map a [a] -> a -> a -> Maybe [a]
 bfsPath edges start end = rebuildPath end res
   where res = dijkstra' (const 1) edges start (== end)
+
+bfsPathDyn :: Show a => Ord a => (a -> [a]) -> a -> a -> Maybe [a]
+bfsPathDyn efunc start end = rebuildPath end res
+  where res = dijkstra''' (const 1) efunc S.empty (singleton (0, start, start)) (== end) 
 
 bfsPathCond :: Show a => Ord a => Map a [a] -> a -> (a -> Bool) -> Maybe [a]
 bfsPathCond edges start endCond
