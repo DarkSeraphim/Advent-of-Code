@@ -1,5 +1,5 @@
 {-# LANGUAGE TupleSections #-}
-module Helpers.Graph (bfs, bfsPath, bfsPathDyn, bfsPathCond, dijkstraPath, dijkstraPaths, dijkstra, dijkstra', dijkstra'', dijkstra''', PathResult (dist, parent), rebuildPaths, rebuildAllPaths, computeDistances) where
+module Helpers.Graph (bfs, bfsPath, bfsPathDyn, bfsPathCond, dijkstraPath, dijkstraPaths, dijkstra, dijkstra', dijkstra'', dijkstra''', PathResult (dist, parent), rebuildPath, rebuildPaths, rebuildAllPaths, computeDistances, computeDistance) where
 import Data.Maybe (mapMaybe)
 import Data.Map (Map, empty, findWithDefault)
 import Data.Set (Set, union, deleteFindMin, fromList, notMember, member, singleton)
