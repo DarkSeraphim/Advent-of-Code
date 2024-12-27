@@ -4,7 +4,7 @@ import Helpers.Input (toPointMap)
 import Data.Map (partition, keys, Map)
 import qualified Data.Map as M
 import Helpers.Point (Point, getY, getX, newPoint)
-import Data.Set (Set, insert, empty, size, member, toList)
+import Data.Set (Set, insert, empty, member, toList)
 
 data Tile = Object | Guard | Empty deriving Eq
 type Dir = Point
@@ -43,7 +43,7 @@ findCycle' grid pos dir seenCollisions =
     collided = insert collision seenCollisions
 
 findCycle :: Map Point Tile -> Point -> Dir -> Point -> Bool
-findCycle grid pos dir newObjectPos 
+findCycle grid pos dir newObjectPos
   | newObjectPos == pos = False
   | otherwise = findCycle' grid' pos dir empty
   where grid' = M.insert newObjectPos Object grid

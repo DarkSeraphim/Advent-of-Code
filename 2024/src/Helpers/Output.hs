@@ -3,9 +3,8 @@ import Data.Map (Map, (!?), keys)
 import Helpers.Point (Point, getX, newPoint, getY)
 import Data.List (intercalate)
 import Text.Printf (printf)
-import System.IO (hPutStr, stdin, stdout)
 clearScreen :: IO ()
-clearScreen = hPutStr stdout "\ESC[2J\ESC]1337;ClearScrollback\007"
+clearScreen = putStr "\ESC[2J\ESC]1337;ClearScrollback\007"
 clearLine :: IO ()
 clearLine = printf "\033[2K\r"
 

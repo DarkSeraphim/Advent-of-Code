@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -Wno-partial-fields #-}
 module Day09.Part1 (solve) where
 import Text.Printf (printf)
 import Helpers.Parsec (Parser, parseInput)

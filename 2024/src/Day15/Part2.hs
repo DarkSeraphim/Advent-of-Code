@@ -5,7 +5,6 @@ import Helpers.Parsec (Parser, parseInput)
 import Data.Map (Map, insert, delete, notMember, (!), toList, fromList)
 import Helpers.Point (Point, newPoint, getX, getY)
 import Helpers.Input (toPointMapMaybe)
-import Helpers.Output (showGrid)
 
 instance Show Tile where
   show Robot = "@"
@@ -59,7 +58,6 @@ cascade grid' point dir
                   FoodR -> cascadeFood grid' point
                   Wall -> Left grid'
   where tile = grid' ! point
-        next = point + dir
         cascade' grid'' p = insert (p + dir) t' . delete p <$> cascade grid'' (p + dir) dir
           where t' = grid'' ! p
         cascadeFood :: Grid -> Point -> Either Grid Grid

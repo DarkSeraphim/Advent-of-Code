@@ -3,14 +3,12 @@
 module Day14.Part2 (solve) where
 import Text.Printf (printf)
 import Helpers.Point (Point, newPoint, getX, getY)
-import Helpers.Parsec (Parser, number, parseInput, parseFile)
+import Helpers.Parsec (Parser, number, parseFile)
 import Text.Parsec (string, char, endOfLine, endBy1)
-import Data.Map (fromListWith, elems, fromList)
-import System.IO (stdin, hReady, hSetBuffering, hSetEcho, BufferMode (NoBuffering), nativeNewline)
-import Control.Monad (when)
+import System.IO (stdin, hReady, hSetBuffering, hSetEcho, BufferMode (NoBuffering))
 import Helpers.Output (clearScreen, showGrid)
-import qualified Data.Set as S
 import Debug.Trace (trace)
+import Data.Map (fromList)
 
 data Robot = Robot {pos :: Point, vel :: Point}
 
@@ -38,13 +36,13 @@ width = 101
 height :: Int
 height = 103
 
-
+{--
 -- Part of a faster solution I technically don't have knowledge about
 moveUntilUnique :: [Robot] -> Int -> Int
 moveUntilUnique robots' n
   | S.size (S.fromList positions) == length robots' = n
   | otherwise = moveUntilUnique robots' (n + 1)
-  where moved = map (move n) robots'  
+  where moved = map (move n) robots'
         positions = map (clip (newPoint width height) . pos) moved
 
 -- See above
@@ -53,7 +51,7 @@ solve' = do
   robots' <- parseInput robots
   let sol = moveUntilUnique robots' 1
   printf "Glitch in the matrix: %d\n" sol
-
+--}
 
 getKey :: IO [Char]
 getKey = reverse <$> getKey' ""
@@ -67,7 +65,7 @@ data Action = Up | Down | Left' | Right' | None
 getAction :: IO Action
 getAction = do
   key <- getKey
-  
+
   trace (show key) $ return $ case key of
       "\ESC[A" -> Up
       "\ESC[B" -> Down

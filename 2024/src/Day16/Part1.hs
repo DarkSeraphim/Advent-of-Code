@@ -9,7 +9,6 @@ import Helpers.Graph (dijkstra''', PathResult(dist))
 import Helpers.Map ((!?))
 import qualified Data.Map as M
 import Data.Maybe (mapMaybe)
-import Debug.Trace (trace)
 
 data Dir = N | S | E | W deriving (Ord, Eq, Show)
 type Key = (Point, Dir)

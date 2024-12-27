@@ -1,6 +1,6 @@
 module Day13.Part2 (solve) where
 import Text.Printf (printf)
-import Helpers.Parsec (Parser, number, parseInput, numberInteger)
+import Helpers.Parsec (Parser, parseInput, numberInteger)
 import Helpers.Point (PointBig, newPoint, getY, getX)
 import Text.Parsec (string, anyChar, endOfLine, sepBy1)
 import Data.Maybe (mapMaybe)
