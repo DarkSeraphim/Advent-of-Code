@@ -1,6 +1,6 @@
 cabal-version: 2.2
 
--- This file has been generated from package.yaml by hpack version 0.38.1.
+-- This file has been generated from package.yaml by hpack version 0.38.0.
 --
 -- see: https://github.com/sol/hpack
 
@@ -27,6 +27,8 @@ library
   exposed-modules:
       Day01.Part1
       Day01.Part2
+      Day02.Part1
+      Day02.Part2
       Helpers.Graph
       Helpers.Input
       Helpers.List
