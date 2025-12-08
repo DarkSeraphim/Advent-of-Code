@@ -1,4 +1,4 @@
-import Data.List (elemIndex, intercalate)
+import Data.List (elemIndex, intercalate, sort)
 import Helpers.Input (maybeIO, readInt)
 import System.Directory (listDirectory)
 import Text.Printf (printf)
@@ -19,10 +19,10 @@ removeExt file =
     Nothing -> file
 
 
-findDays :: IO [[Char]]
-findDays = concatMap isDay <$> listDirectory "src/"
+findDays :: IO [String]
+findDays = sort . concatMap isDay <$> listDirectory "src/"
 findParts :: [Char] -> IO [(String, String, [Char])]
-findParts day = concatMap (getPart day . removeExt) <$> listDirectory ("src/Day" ++ day)
+findParts day = sort . concatMap (getPart day . removeExt) <$> listDirectory ("src/Day" ++ day)
 
 buildImport :: String -> String
 buildImport mod' = "import " ++ mod'
