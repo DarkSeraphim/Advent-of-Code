@@ -1,6 +1,7 @@
-module Helpers.List (chunksOf, cycleN, combinations, combinations1, frequency) where
-import Data.List (group, sort)
+module Helpers.List (chunksOf, cycleN, combinations, combinations1, frequency, head', tail') where
+import Data.List (group, sort, uncons)
 import Data.Map (Map, fromList)
+import Data.Maybe (fromJust)
 
 chunksOf :: Int -> [a] -> [[a]]
 chunksOf _ [] = []
@@ -23,4 +24,10 @@ combinations1 (x:rest) = map (x:) res ++ res
   where res = combinations1 rest
 
 frequency :: Ord a => [a] -> Map a Int
-frequency l = fromList $ map (\g -> (head g, length g)) . group . sort $ l
+frequency l = fromList $ map (\g -> (head' g, length g)) . group . sort $ l
+
+head' :: [a] -> a
+head' l = fst $ fromJust $ uncons l
+
+tail' :: [a] -> [a]
+tail' = drop 1

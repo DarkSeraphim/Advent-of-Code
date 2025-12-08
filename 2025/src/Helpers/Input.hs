@@ -3,24 +3,26 @@ module Helpers.Input (split, replace, readIntChar, readInt, maybeIO, orFail, toP
 import Helpers.Point (Point, newPoint)
 import Data.Map (Map, fromList)
 import Data.Maybe (catMaybes)
+import Helpers.List (tail', head')
+import Data.List (uncons)
 
-split :: Char -> String -> [String]
+split :: Eq a => a -> [a] -> [[a]]
 split c (x:xs)
     | x == c = [] : split c xs
     | null xs = [[x]]
-    | otherwise = (x : head result) : tail result
+      -- We know that result is never empty, otherwise the previous case would be hit
+    | otherwise = (x : head' result) : tail' result
         where result = split c xs
 split _ [] = []
 
 
-replace' :: Int -> String -> String -> String -> String
-replace' _ _ _ [] = []
-replace' nl n r h
-  | n == take nl h = r ++ replace n r (drop nl h)
-  | otherwise = head h : replace n r (tail h)
-
 replace :: String -> String -> String -> String
-replace n = replace' (length n) n
+replace needle replacement haystack
+  | needle == take nl haystack = replacement ++ replace needle replacement (drop nl haystack)
+  | otherwise = case uncons haystack of
+                  Just (h', t') -> h' : replace needle replacement t'
+                  Nothing -> []
+  where nl = length needle
 
 readIntChar :: Char -> Int
 readIntChar c = readInt [c]

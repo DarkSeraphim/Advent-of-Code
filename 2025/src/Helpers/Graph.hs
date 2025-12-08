@@ -5,7 +5,7 @@ import Data.Map (Map, empty, findWithDefault)
 import Data.Set (Set, union, deleteFindMin, fromList, notMember, member, singleton)
 import qualified Data.Set as S
 import qualified Data.Map as M
-import Data.List (sortOn)
+import Data.List (sortOn, uncons)
 
 data PathResult a = PathResult {dist :: Int, parent :: [a]} deriving Show
 
@@ -15,7 +15,7 @@ rebuildPaths as results = M.fromList $ mapMaybe (\a -> (a,) <$> rebuildPath a re
 rebuildPath :: Ord a => a -> Map a (PathResult a) -> Maybe [a]
 rebuildPath cur res = do
   res' <- M.lookup cur res
-  let p = head $ parent res'
+  p <- fst <$> uncons (parent res')
   if cur == p then Just [cur] else (cur :) <$> rebuildPath p res
 
 rebuildAllPaths :: Ord a => Map a (PathResult a) -> a -> [[a]]
@@ -48,7 +48,7 @@ dijkstra weights edges start = dijkstra' (\k -> findWithDefault maxBound k weigh
 
 dijkstra' :: Show a => Ord a => ((a, a) -> Int) -> Map a [a] -> a -> (a -> Bool) -> Map a (PathResult a)
 dijkstra' wfunc edges start done = res
-  where res = dijkstra'' wfunc edges  S.empty (singleton (0, start, start))done
+  where res = dijkstra'' wfunc edges  S.empty (singleton (0, start, start)) done
 
 -- | This implementation currently doesn't stop at the end node, but computes the full graph
 dijkstra'' :: Show a => Ord a => ((a, a) -> Int) -> Map a [a] -> Set a -> Set (Int, a, a) -> (a -> Bool) -> Map a (PathResult a)
@@ -81,7 +81,7 @@ bfsPath edges start end = rebuildPath end res
 
 bfsPathDyn :: Show a => Ord a => (a -> [a]) -> a -> a -> Maybe [a]
 bfsPathDyn efunc start end = rebuildPath end res
-  where res = dijkstra''' (const 1) efunc S.empty (singleton (0, start, start)) (== end) 
+  where res = dijkstra''' (const 1) efunc S.empty (singleton (0, start, start)) (== end)
 
 bfsPathCond :: Show a => Ord a => Map a [a] -> a -> (a -> Bool) -> Maybe [a]
 bfsPathCond edges start endCond
