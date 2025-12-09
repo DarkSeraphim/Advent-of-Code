@@ -1,4 +1,4 @@
-module Helpers.Point (Point, PointBig, newPoint, newPoint3, getX, getY, getZ, manhattan, neighbours, neighboursDiag, diagonals, neighbours3) where
+module Helpers.Point (Point, PointBig, newPoint, newPoint3, getX, getY, getZ, manhattan, neighbours, neighboursDiag, diagonals, neighbours3, distSquared) where
 data PointA a = PointA {x :: a, y :: a, z :: a} deriving (Show, Eq, Ord)
 
 type Point = PointA Int
@@ -18,6 +18,9 @@ newPoint x' y' = PointA { x = x', y = y', z = 0}
 newPoint3 :: a -> a -> a -> PointA a
 newPoint3 x' y' z' = PointA { x = x', y = y', z = z'}
 
+toList :: PointA a -> [a]
+toList p = [x p, y p, z p]
+
 getX :: PointA a -> a
 getX = x
 getY :: PointA a -> a
@@ -28,6 +31,9 @@ getZ = z
 manhattan :: Num a => PointA a -> PointA a -> a
 manhattan a b = x c + y c + z c
   where c = abs (a - b)
+
+distSquared :: Num a => PointA a -> PointA a -> a
+distSquared a b = sum $ map (^ (2::Int)) $ toList (b - a)
 
 neighbours :: [Point]
 neighbours = map (uncurry newPoint) [(0, 1), (1, 0), (0, -1), (-1, 0)]

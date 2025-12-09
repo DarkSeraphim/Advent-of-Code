@@ -1,4 +1,4 @@
-module Helpers.List (chunksOf, cycleN, combinations, combinations1, frequency, head', tail') where
+module Helpers.List (chunksOf, cycleN, combinations, combinations1, frequency, head', tail', pairs, pairsOther) where
 import Data.List (group, sort, uncons)
 import Data.Map (Map, fromList)
 import Data.Maybe (fromJust)
@@ -22,6 +22,12 @@ combinations1 [] = error "Empty list"
 combinations1 [x] = [[x]]
 combinations1 (x:rest) = map (x:) res ++ res
   where res = combinations1 rest
+
+pairs :: [a] -> [(a, a)]
+pairs l = [(x, y) | x <- l, y <- l]
+
+pairsOther :: Eq a => [a] -> [(a, a)]
+pairsOther = filter (uncurry (/=)) . pairs
 
 frequency :: Ord a => [a] -> Map a Int
 frequency l = fromList $ map (\g -> (head' g, length g)) . group . sort $ l
