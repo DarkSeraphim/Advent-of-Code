@@ -1,17 +1,32 @@
 {-# LANGUAGE TupleSections #-}
-module Helpers.Parsec (number, numberInteger, parseInput, parseInputWithState, parseGrid, parseGridMaybe, parseString, parseFile, Parser, StatefulParser, endBy1', sepBy1', spaces) where
+module Helpers.Parsec (
+  number, 
+  numberInteger,
+  parseInput,
+  parseInputWithState,
+  parseGrid,
+  parseGridMaybe,
+  parseString,
+  parseFile,
+  Parser,
+  StatefulParser,
+  endBy1',
+  sepBy1',
+  spaces,
+  point2D,
+  point3D) where
 import Text.ParserCombinators.Parsec (GenParser, option, parse, (<|>), try, runParser, many1, SourcePos, getPosition, sourceColumn)
 import Helpers.Input (readInt, orFail)
 import Control.Applicative (some)
 import Text.ParserCombinators.Parsec.Char (digit, char)
 import Control.Monad (void)
 import Text.Parsec.Pos (initialPos, sourceLine)
-import Helpers.Point (Point, newPoint)
+import Helpers.Point (Point, newPoint, newPoint3)
 import Data.Map (Map, fromList)
 import Text.Parsec (noneOf, endOfLine, sepEndBy1, oneOf)
 import Data.Maybe (catMaybes)
 import System.IO (IOMode(ReadMode), openFile, hGetContents)
-    
+
 type Parser a = StatefulParser () a
 type StatefulParser s a = GenParser Char s a
 
@@ -50,6 +65,12 @@ sepBy1' a sep = (:) <$> a <*> f
 
 tryMaybe :: StatefulParser s a -> StatefulParser s (Maybe a)
 tryMaybe a = try (Just <$> a) <|> return Nothing
+
+point2D :: Parser Point
+point2D = newPoint <$> (number <* char ',') <*> number
+
+point3D :: Parser Point 
+point3D = newPoint3 <$> (number <* char ',') <*> (number <* char ',') <*> number
 
 parseInput :: StatefulParser () a -> IO a
 parseInput parseFunc = (orFail . parse parseFunc "Input") =<< getContents

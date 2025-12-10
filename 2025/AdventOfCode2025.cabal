@@ -39,6 +39,8 @@ library
       Day06.Part2
       Day07.Part1
       Day07.Part2
+      Day09.Part1
+      Day09.Part2
       Helpers.Graph
       Helpers.Input
       Helpers.List
