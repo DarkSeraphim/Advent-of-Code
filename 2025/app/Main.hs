@@ -22,6 +22,8 @@ import Day07.Part1
 import Day07.Part2
 import Day09.Part1
 import Day09.Part2
+import Day10.Part1
+import Day10.Part2
 solveDay :: String -> String -> IO ()
 solveDay "1" "1" = Day01.Part1.solve
 solveDay "1" "2" = Day01.Part2.solve
@@ -39,6 +41,8 @@ solveDay "7" "1" = Day07.Part1.solve
 solveDay "7" "2" = Day07.Part2.solve
 solveDay "9" "1" = Day09.Part1.solve
 solveDay "9" "2" = Day09.Part2.solve
+solveDay "10" "1" = Day10.Part1.solve
+solveDay "10" "2" = Day10.Part2.solve
 -- AUTOGEN-END
 
 -- solveDay :: String -> String -> IO ()
