@@ -51,6 +51,7 @@ library
       Helpers.Input
       Helpers.List
       Helpers.Map
+      Helpers.Matrix
       Helpers.Output
       Helpers.Parsec
       Helpers.Point

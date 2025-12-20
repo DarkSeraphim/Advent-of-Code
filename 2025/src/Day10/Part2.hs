@@ -8,12 +8,15 @@ import Data.Bits (Bits(xor))
 import Data.Set (empty, singleton)
 import Data.Maybe (fromJust)
 import Data.IntMap.Strict (IntMap, fromList, unionWith, filterWithKey, (!), unionsWith, insertWith, keys)
-import Helpers.List (cycleN, head')
-import Data.List (sortOn, sort, nub, maximumBy)
+import Helpers.List (cycleN, head', tail')
+import Data.List (sortOn, sort, nub, maximumBy, transpose)
 import Control.Applicative (asum)
 import Debug.Trace (trace)
 import qualified Data.IntMap as M
 import Data.List (partition)
+import Helpers.Matrix (augmentColumns, rowEchelonForm, unaugmentColumn, showMatrix)
+import Data.Fixed (mod')
+import qualified Data.Set as S
 
 
 data Input = Input {output :: [Bool], toggles :: [[Int]], joltageRequirements :: [Int]}
@@ -116,10 +119,57 @@ dfs buttons goal state
         maxPresses' = maxPresses diff pressing
         rec n = (n +) <$> dfs (drop 1 buttonsLeft) goal (applyPresses state pressing n)
 
+buildButtonMatrix :: Int -> [[Int]] -> [[Int]]
+buildButtonMatrix joltageCount buttons = transpose buttonCoefficients
+  where buttonCoefficients = map (\b -> map (\i -> if i `elem` b then 1 else 0) [0..(joltageCount - 1)]) buttons
+
+buildLPMatrix :: Input -> [[Int]]
+buildLPMatrix input = augmentColumns buttonsMatrix joltages
+  where joltages = joltageRequirements input
+        buttonsMatrix = buildButtonMatrix (length joltages) (toggles input)
+
+bruteForce :: Int -> [Int] -> [[Int]]
+-- If it's too big, this is a likely issue
+bruteForce sol coef = takeWhile ((minSum ==) . sum)  sols
+  where presses = combinationPresses sol (length coef)
+        isSol p = sol == sum (zipWith (*) coef p)
+        sols = sortOn sum (filter isSol presses)
+        minSum = sum $ head' sols
+
+
+solveRow :: [Int] -> [[Int]] -> Int -> [[Int]]
+solveRow coefs partials const' = concatMap nFree partials
+  where nonZero = dropWhile (==0) coefs
+        freeCount partial = length nonZero - length partial
+        partialSol partial = const' - sum (zipWith (*) (reverse partial) (reverse coefs))
+        nFree partial = if 1 == freeCount partial then [oneFree partial] else moreFree partial
+        oneFree partial = trace (printf "one free for partial %s\n" (show partial)) $ partialSol partial `div` head' nonZero : partial
+        moreFree partial = trace (printf "more free for partial %s\n" (show partial)) map ( ++ partial) $ bruteForce (partialSol partial) (take (freeCount partial) nonZero)
+
+solveMatrixBackwards :: [[Int]] -> [Int] -> [[Int]]
+solveMatrixBackwards [] [] = [[]]
+solveMatrixBackwards (coef:coefs) (const':consts) = trace (printf "Solution: %s\n" (show sol)) sol 
+  where partial = solveMatrixBackwards coefs consts
+        sol = solveRow coef partial const'
+
+solveMatrixBackwards _ _ = error "Weird matrix"
+
+dedupeMatrix :: [[Int]] -> [[Int]]
+dedupeMatrix m = dedupe m S.empty
+  where dedupe [] _ = []
+        dedupe (r:rest) seen
+          | r `S.member` seen = dedupe rest seen
+          | otherwise = r : dedupe rest (S.insert r seen)
 
 solveForInput :: (Int, Input) -> IO Int
 solveForInput (idx, input) = do
-    let res = fromJust $ dfs ts js start
+    let matrix = buildLPMatrix input
+        refMatrix = rowEchelonForm (dedupeMatrix matrix)
+        (coefs, consts) = unaugmentColumn refMatrix
+        solution = solveMatrixBackwards coefs consts
+    printf "Matrix:\n%s\n\n" (showMatrix matrix)
+    printf "Deduped:\n%s\n\n" (showMatrix $ dedupeMatrix matrix)
+    let res = minimum $ map sum solution
     printf "%d has result %d\n" idx res
     return res
     where js = encodeState $ joltageRequirements input
