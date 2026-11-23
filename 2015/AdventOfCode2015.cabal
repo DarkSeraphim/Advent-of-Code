@@ -23,6 +23,8 @@ library
   exposed-modules:
       Day15.Part1
       Day15.Part2
+      Day16.Part1
+      Day16.Part2
   other-modules:
       Paths_AdventOfCode2015
   autogen-modules:

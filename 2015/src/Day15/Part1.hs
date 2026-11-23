@@ -1,4 +1,4 @@
-module Day15.Part1 (solve, generateCounts) where
+module Day15.Part1 (solve) where
 import Text.Printf (printf)
 import Helpers.Parsec (Parser, number, sepBy1', endBy1', parseInput)
 import Text.Parsec ( space, string, endOfLine, noneOf, many1 )

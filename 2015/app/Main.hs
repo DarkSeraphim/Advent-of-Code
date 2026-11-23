@@ -8,9 +8,13 @@ import System.Environment (getArgs)
 -- AUTOGEN-START
 import Day15.Part1
 import Day15.Part2
+import Day16.Part1
+import Day16.Part2
 solveDay :: String -> String -> IO ()
 solveDay "15" "1" = Day15.Part1.solve
 solveDay "15" "2" = Day15.Part2.solve
+solveDay "16" "1" = Day16.Part1.solve
+solveDay "16" "2" = Day16.Part2.solve
 -- AUTOGEN-END
 
 -- solveDay :: String -> String -> IO ()
