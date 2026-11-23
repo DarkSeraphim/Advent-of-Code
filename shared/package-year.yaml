@@ -1,0 +1,39 @@
+version:             0.1.0.0
+github:              "DarkSeraphim/AdventOfCode"
+license:             BSD-3-Clause
+author:              "DarkSeraphim"
+maintainer:          "no-scrape@domain.net"
+copyright:           "2026 DarkSeraphim"
+
+# Metadata used when publishing your package
+# synopsis:            Short description of your package
+# category:            Web
+
+# To avoid duplicated efforts in documentation and dealing with the
+# complications of embedding Haddock markup inside cabal files, it is
+# common to point users to the README.md file.
+description:         Please see the README on GitHub at <https://github.com/DarkSeraphim/AdventOfCode>
+
+dependencies:
+- base >= 4.7 && < 5
+- deepseq >= 1.4.4.0
+- containers >= 0.6.5.1
+- text >= 1.2.4.1
+- time >= 1.9.3
+- process >= 1.6.13.2
+- directory >= 1.3.6.0
+- filepath >= 1.4.2.1
+- parsec >= 3.1.14.0
+- pretty >= 1.1.3.6
+
+
+ghc-options:
+- -Wall
+- -Wcompat
+- -Widentities
+- -Wincomplete-record-updates
+- -Wincomplete-uni-patterns
+- -Wmissing-export-lists
+- -Wmissing-home-modules
+- -Wpartial-fields
+- -Wredundant-constraints

@@ -1,0 +1,7 @@
+<<: !include "../shared/package-year.yaml"
+
+name: Helpers
+version: 0.1.0.0
+
+library:
+  source-dirs: src

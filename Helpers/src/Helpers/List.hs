@@ -1,0 +1,39 @@
+module Helpers.List (chunksOf, cycleN, combinations, combinations1, frequency, head', tail', pairs, pairsOther) where
+import Data.List (group, sort, uncons)
+import Data.Map (Map, fromList)
+import Data.Maybe (fromJust)
+
+chunksOf :: Int -> [a] -> [[a]]
+chunksOf _ [] = []
+chunksOf num list = take num list : chunksOf num (drop num list)
+
+cycleN :: Int -> [a] -> [a]
+cycleN 0 _ = []
+cycleN 1 a = a
+cycleN n a
+  | n < 0 = error "Negative cycle"
+  | otherwise = a ++ cycleN (n - 1) a
+
+combinations :: [a] -> [[a]]
+combinations list = [] : combinations1 list 
+
+combinations1 :: [a] -> [[a]]
+combinations1 [] = error "Empty list"
+combinations1 [x] = [[x]]
+combinations1 (x:rest) = map (x:) res ++ res
+  where res = combinations1 rest
+
+pairs :: [a] -> [(a, a)]
+pairs l = [(x, y) | x <- l, y <- l]
+
+pairsOther :: Eq a => [a] -> [(a, a)]
+pairsOther = filter (uncurry (/=)) . pairs
+
+frequency :: Ord a => [a] -> Map a Int
+frequency l = fromList $ map (\g -> (head' g, length g)) . group . sort $ l
+
+head' :: [a] -> a
+head' l = fst $ fromJust $ uncons l
+
+tail' :: [a] -> [a]
+tail' = drop 1
