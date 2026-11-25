@@ -29,6 +29,8 @@ library
       Day17.Part2
       Day18.Part1
       Day18.Part2
+      Day19.Part1
+      Day19.Part2
   other-modules:
       Paths_AdventOfCode2015
   autogen-modules:
